@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Klaviyo Recruiting Page Generator</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Klaviyo Degular';src:url('https://cdn.jsdelivr.net/gh/maasawalker/klaviyo-ai-eng-recruiting-page@main/deploy/assets/fonts/KlaviyoDegular/KlaviyoDegular-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Klaviyo Degular';src:url('https://cdn.jsdelivr.net/gh/maasawalker/klaviyo-ai-eng-recruiting-page@main/deploy/assets/fonts/KlaviyoDegular/KlaviyoDegular-Medium.otf') format('opentype');font-weight:500;font-display:swap}
+@font-face{font-family:'Klaviyo Degular';src:url('https://cdn.jsdelivr.net/gh/maasawalker/klaviyo-ai-eng-recruiting-page@main/deploy/assets/fonts/KlaviyoDegular/KlaviyoDegular-Semibold.otf') format('opentype');font-weight:600;font-display:swap}
+</style>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--poppy:#FF4B32;--charcoal:#1D1E20;--mist:#F3F2F1;--white:#FFFFFF;--border:#E5E4E3}
+body{font-family:'Instrument Sans',sans-serif;background:var(--mist);height:100vh;overflow:hidden;display:flex;flex-direction:column}
+.app-header{background:var(--charcoal);padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.app-logo{display:flex;align-items:center;gap:12px}
+.app-logo img{height:22px;width:auto}
+.app-title{font-family:'Klaviyo Degular','Instrument Sans',sans-serif;font-size:18px;font-weight:500;color:rgba(255,255,255,0.7);letter-spacing:-.01em}
+.btn-copy{background:var(--poppy);color:white;border:none;border-radius:2px;padding:7px 16px;font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:opacity .15s}
+.btn-copy:hover{opacity:.88}
+.btn-copy.copied{background:#2e7d32}
+.app-body{display:flex;flex:1;overflow:hidden}
+.form-panel{width:400px;flex-shrink:0;background:white;border-right:1px solid var(--border);overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:4px}
+.form-section-label{font-family:'Klaviyo Degular','DM Mono',monospace;font-size:16px;font-weight:500;letter-spacing:-.01em;color:var(--charcoal);padding:14px 0 8px;border-bottom:2px solid var(--poppy);margin-bottom:10px;margin-top:10px;display:flex;align-items:center;justify-content:space-between}
+/* Section toggle */
+.section-toggle{display:flex;align-items:center;gap:5px;cursor:pointer;font-size:9px;color:#aaa;font-weight:400;letter-spacing:.04em;text-transform:uppercase;font-family:'Instrument Sans',sans-serif}
+.toggle-switch{position:relative;width:28px;height:16px;flex-shrink:0}
+.toggle-switch input{opacity:0;width:0;height:0;position:absolute}
+.toggle-slider{position:absolute;inset:0;background:#ddd;border-radius:100px;transition:.2s}
+.toggle-slider::before{content:'';position:absolute;width:12px;height:12px;left:2px;bottom:2px;background:white;border-radius:50%;transition:.2s}
+.toggle-switch input:checked+.toggle-slider{background:var(--poppy)}
+.toggle-switch input:checked+.toggle-slider::before{transform:translateX(12px)}
+.section-hidden{opacity:.35;pointer-events:none;user-select:none}
+.field{margin-bottom:8px}
+.field label{display:block;font-size:10px;font-weight:500;color:#888;margin-bottom:3px;text-transform:uppercase;letter-spacing:.04em}
+.field input,.field textarea{width:100%;border:1px solid var(--border);border-radius:3px;padding:7px 9px;font-family:'Instrument Sans',sans-serif;font-size:12px;color:#b0aeac;background:white;outline:none;transition:border-color .15s,background .2s,color .2s;resize:vertical}
+.field input:focus,.field textarea:focus{border-color:var(--poppy)}
+/* Field states */
+.field input.autofilled,.field textarea.autofilled{background:#fffbdb;border-color:#e8c800;color:var(--charcoal)}
+.field input.reviewed,.field textarea.reviewed{background:white;border-color:var(--border);color:var(--charcoal)}
+/* Field state legend */
+.field-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;padding:8px 10px;background:#fafafa;border:1px solid var(--border);border-radius:4px}
+.field-legend-item{display:flex;align-items:center;gap:5px;font-size:10px;color:#888}
+.legend-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.legend-grey{background:#e8e6e4;border:1px solid #d0cecc}
+.legend-yellow{background:#fffbdb;border:1px solid #e8c800}
+.legend-white{background:white;border:1px solid var(--border)}
+.field textarea{min-height:72px;line-height:1.5}
+.field-hint{font-size:10px;color:#aaa;margin-top:2px}
+.field-row{display:flex;gap:8px}
+.field-row .field{flex:1}
+.card-group{background:#fafafa;border:1px solid var(--border);border-radius:6px;padding:10px;margin-bottom:8px}
+.card-group-title{font-family:'Klaviyo Degular','Instrument Sans',sans-serif;font-size:15px;font-weight:500;color:var(--charcoal);letter-spacing:-.01em;margin-bottom:8px}
+/* Apply Klaviyo Degular to all importer/section headings in the form */
+.form-panel [style*="font-family:'DM Mono'"][style*="text-transform:uppercase"],
+.form-panel [style*='font-family:\'DM Mono\''] { font-family:'Klaviyo Degular','DM Mono',monospace !important; }
+.preview-panel{flex:1;overflow:hidden;position:relative}
+.preview-panel iframe{width:100%;height:100%;border:none;display:block}
+.preview-label{position:absolute;top:12px;right:12px;background:rgba(29,30,32,0.7);color:white;font-size:11px;font-family:'DM Mono',monospace;padding:4px 10px;border-radius:100px;letter-spacing:.06em;pointer-events:none;z-index:10}
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="app-logo">
+    <!-- Use hosted logo from GitHub repo -->
+    <img src="https://cdn.jsdelivr.net/gh/maasawalker/klaviyo-ai-eng-recruiting-page@main/deploy/assets/logos/Klaviyo-Logo-White.svg" alt="Klaviyo">
+    <span class="app-title">Recruiting Page Generator</span>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <button id="demoBtn" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.2);border-radius:2px;padding:7px 14px;font-family:'Instrument Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;" onmouseover="this.style.background='rgba(255,255,255,0.18)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">⚡ Load demo</button>
+    <button class="btn-copy" id="copyBtn">Copy HTML</button>
+  </div>
+</div>
+
+<div class="app-body">
+
+  <!-- FORM PANEL -->
+  <div class="form-panel">
+
+    <!-- Field state legend -->
+    <div class="field-legend">
+      <div class="field-legend-item"><div class="legend-dot legend-grey"></div>Template default — review before publishing</div>
+      <div class="field-legend-item"><div class="legend-dot legend-yellow"></div>Auto-filled from JD — confirm it's right</div>
+      <div class="field-legend-item"><div class="legend-dot legend-white"></div>Edited by you — good to go</div>
+    </div>
+
+    <!-- JD IMPORTER + PERSONA (combined) -->
+    <div style="background:#fff8f7;border:1px solid #ffd0c8;border-radius:6px;padding:12px;margin-bottom:12px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--poppy);margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+        <span>✦</span> Smart JD importer
+      </div>
+
+      <!-- Dev mode: key field only visible when running locally -->
+      <div id="devKeyField" style="display:none">
+        <div class="field">
+          <label>Groq API key <span style="color:#bbb;font-weight:400;text-transform:none;letter-spacing:0">(local testing only — hidden on Vercel)</span></label>
+          <input id="openaiKey" type="password" placeholder="gsk_..." style="font-family:monospace">
+        </div>
+      </div>
+
+      <!-- Step 1: JD -->
+      <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--poppy);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">Step 1 — Job description</div>
+      <div class="field">
+        <label>URL</label>
+        <div style="display:flex;gap:6px;">
+          <input id="jdUrl" type="text" placeholder="https://www.klaviyo.com/careers/jobs/..." style="flex:1">
+          <button id="fetchBtn" style="background:var(--poppy);color:white;border:none;border-radius:3px;padding:7px 12px;font-family:'Instrument Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;flex-shrink:0">Fetch</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Or paste JD text</label>
+        <textarea id="jdText" style="min-height:80px" placeholder="Paste the full job description text here..."></textarea>
+      </div>
+
+      <!-- Divider -->
+      <div style="border-top:1px dashed #ffd0c8;margin:12px 0"></div>
+
+      <!-- Step 2: Persona -->
+      <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--poppy);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">Step 2 — Candidate persona context <span style="color:#ccc;font-weight:400">optional</span></div>
+      <div style="margin-bottom:10px;">
+        <div style="font-size:10px;color:#888;margin-bottom:6px;font-weight:500;text-transform:uppercase;letter-spacing:.04em;">Quick presets</div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;" id="personaPresets">
+          <button data-preset="engineering" style="font-size:11px;font-family:'Instrument Sans',sans-serif;padding:5px 10px;border-radius:100px;border:1px solid var(--border);background:white;cursor:pointer;color:#555;transition:all .15s;">⚙ Engineering</button>
+          <button data-preset="marketing" style="font-size:11px;font-family:'Instrument Sans',sans-serif;padding:5px 10px;border-radius:100px;border:1px solid var(--border);background:white;cursor:pointer;color:#555;transition:all .15s;">📣 Marketing</button>
+          <button data-preset="sales" style="font-size:11px;font-family:'Instrument Sans',sans-serif;padding:5px 10px;border-radius:100px;border:1px solid var(--border);background:white;cursor:pointer;color:#555;transition:all .15s;">💼 Sales</button>
+          <button data-preset="product" style="font-size:11px;font-family:'Instrument Sans',sans-serif;padding:5px 10px;border-radius:100px;border:1px solid var(--border);background:white;cursor:pointer;color:#555;transition:all .15s;">🗺 Product</button>
+          <button data-preset="people" style="font-size:11px;font-family:'Instrument Sans',sans-serif;padding:5px 10px;border-radius:100px;border:1px solid var(--border);background:white;cursor:pointer;color:#555;transition:all .15s;">🤝 People</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Upload a persona / EVP doc <span style="color:#bbb;font-weight:400;text-transform:none;letter-spacing:0">(.txt, .md, .doc, .docx)</span></label>
+        <input type="file" id="personaFile" accept=".txt,.md,.doc,.docx" style="width:100%;font-size:11px;color:#888">
+      </div>
+      <div class="field">
+        <label>Or paste persona / EVP notes</label>
+        <textarea id="personaText" style="min-height:72px" placeholder="e.g. Marketing candidates care about: creative autonomy, brand impact, data-backed decisions, fast feedback loops. Key motivators: ownership, audience scale, cross-functional influence..."></textarea>
+      </div>
+      <div id="personaStatus" style="font-size:10px;color:#2e7d32;margin-bottom:6px;min-height:12px;"></div>
+
+      <!-- Parse button at the bottom -->
+      <button id="parseBtn" style="width:100%;background:var(--charcoal);color:white;border:none;border-radius:3px;padding:10px;font-family:'Instrument Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:4px;letter-spacing:.01em;">✦ Parse & autofill form</button>
+      <div id="parseStatus" style="font-size:11px;color:#888;margin-top:6px;min-height:14px;text-align:center;"></div>
+    </div>
+
+    <div class="form-section-label"><span>Basic info</span></div>
+    <div class="field"><label>Job title</label><input id="jobTitle" type="text" value="Senior AI Engineer"></div>
+    <div class="field-row">
+      <div class="field"><label>Team</label><input id="team" type="text" value="Engineering"></div>
+      <div class="field"><label>Location</label><input id="location" type="text" value="Boston, MA"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Salary min</label><input id="salaryMin" type="text" value="$148,000"></div>
+      <div class="field"><label>Salary max</label><input id="salaryMax" type="text" value="$222,000"></div>
+    </div>
+
+    <div class="form-section-label" data-section="ticker"><span>Ticker</span></div>
+    <div class="field"><label>Ticker phrase 1 (required)</label><input id="ticker1" type="text" value="196K+ customers worldwide"></div>
+    <div class="field"><label>Ticker phrase 2 (optional)</label><input id="ticker2" type="text" value="7.3B customer profiles"></div>
+    <div class="field"><label>Ticker phrase 3 (optional)</label><input id="ticker3" type="text" value="1.6B avg API calls daily"></div>
+    <div class="field"><label>Ticker phrase 4 (optional)</label><input id="ticker4" type="text" value="Agentic AI at scale"></div>
+
+    <div class="form-section-label"><span>Hero</span></div>
+    <div class="field">
+      <label>Hero headline</label>
+      <textarea id="heroHeadline" style="min-height:52px">Build the AI that runs itself.</textarea>
+      <div class="field-hint">Write the full headline. The "Poppy phrase" below will appear in brand red italic.</div>
+    </div>
+    <div class="field">
+      <label>Poppy phrase (exact text to highlight)</label>
+      <input id="heroPoppy" type="text" value="that runs itself.">
+      <div class="field-hint">Must match text in the headline exactly</div>
+    </div>
+    <div class="field"><label>Subtitle</label><textarea id="heroSub">Most engineers work with AI tools. Here you build the infrastructure that makes AI act autonomously — at the scale of 196K+ businesses and billions of consumer interactions.</textarea></div>
+    <div class="field-row">
+      <div class="field"><label>Pill 1</label><input id="pill1" type="text" value="$148K – $222K base"></div>
+      <div class="field"><label>Pill 2 (optional)</label><input id="pill2" type="text" value="Backend-heavy · AI/ML"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Pill 3 (optional)</label><input id="pill3" type="text" value=""></div>
+      <div class="field"><label>Pill 4 (optional)</label><input id="pill4" type="text" value=""></div>
+    </div>
+
+    <div class="form-section-label" data-section="why"><span>Why Klaviyo (4 cards)</span></div>
+    <div class="field">
+      <label>Section title</label>
+      <textarea id="whyTitle" style="min-height:44px">Agentic AI and automation, at scale, for 196K+ businesses.</textarea>
+    </div>
+    <div class="field">
+      <label>Poppy phrase (exact text to highlight)</label>
+      <input id="whyTitlePoppy" type="text" value="at scale,">
+      <div class="field-hint">Must match text in the title exactly</div>
+    </div>
+
+    <div class="card-group">
+      <div class="card-group-title">Card 1</div>
+      <div class="field"><label>Title</label><input id="why1Title" type="text" value="Training data no one else has"></div>
+      <div class="field"><label>Description</label><textarea id="why1Desc" style="min-height:56px">Billions of consumer profiles. Hundreds of billions of customer messages and the conversion data that follows. Your models learn from real outcomes.</textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Link 1</label><input id="why1Link1" type="text" value="196K+ customers"></div>
+        <div class="field"><label>Link 2</label><input id="why1Link2" type="text" value="Production AI at scale"></div>
+      </div>
+    </div>
+
+    <div class="card-group">
+      <div class="card-group-title">Card 2</div>
+      <div class="field"><label>Title</label><input id="why2Title" type="text" value="Leveled on engineering scope, not AI years"></div>
+      <div class="field"><label>Description</label><textarea id="why2Desc" style="min-height:56px">We look at production ownership, system complexity, and what you've built that actually ran. Direct AI experience matters — it's not the only thing.</textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Link 1</label><input id="why2Link1" type="text" value="Scope-based leveling"></div>
+        <div class="field"><label>Link 2</label><input id="why2Link2" type="text" value="AI system design interview"></div>
+      </div>
+    </div>
+
+    <div class="card-group">
+      <div class="card-group-title">Card 3 <span style="color:#bbb;font-weight:400">— optional (leave blank for 2-card layout)</span></div>
+      <div class="field"><label>Title</label><input id="why3Title" type="text" value="Software that runs itself"></div>
+      <div class="field"><label>Description</label><textarea id="why3Desc" style="min-height:56px">We're building toward AI that can optimize itself based on outcomes. You'll help build the infrastructure that makes Klaviyo's agents run without someone watching them.</textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Link 1</label><input id="why3Link1" type="text" value="Agentic architecture"></div>
+        <div class="field"><label>Link 2</label><input id="why3Link2" type="text" value="Multiple orgs hiring"></div>
+      </div>
+    </div>
+
+    <div class="card-group">
+      <div class="card-group-title">Card 4 <span style="color:#bbb;font-weight:400">— optional</span></div>
+      <div class="field"><label>Title</label><input id="why4Title" type="text" value="Impact at real scale"></div>
+      <div class="field"><label>Description</label><textarea id="why4Desc" style="min-height:56px">196K+ customers means every backend decision has a real blast radius. The infrastructure you build here touches more businesses than most engineers reach in a full career.</textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Link 1</label><input id="why4Link1" type="text" value="Powering your favorite brands"></div>
+        <div class="field"><label>Link 2</label><input id="why4Link2" type="text" value="350+ pre-built integrations"></div>
+      </div>
+    </div>
+
+    <div class="form-section-label" data-section="role"><span>Role details</span></div>
+    <div class="field"><label>What you're building (one per line)</label><textarea id="building" style="min-height:100px">Backend systems that power agentic AI products at scale
+Data pipelines that feed ML models the right training signal
+Model-serving infrastructure that makes AI reliable in production
+The scaffolding for Klaviyo's agentic architecture
+Influencing architecture decisions on AWS and Kubernetes</textarea></div>
+    <div class="field"><label>How you'll spend your time (one per line)</label><textarea id="time" style="min-height:100px">Designing async processing pipelines and distributed systems
+Building and shipping generative AI and agentic applications
+Creating evals that tell you when your AI is actually working
+Collaborating directly with PMs, ML engineers, and data scientists
+Owning architecture decisions on AWS and Kubernetes</textarea></div>
+
+    <div class="form-section-label" data-section="stack"><span>Skills</span></div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:#aaa;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;">Technical skills <span style="color:#ccc;font-weight:400">— leave blank to hide</span></div>
+    <div class="field"><label>All tags (comma-separated)</label><input id="techTags" type="text" value="Python, FastAPI, Django, Apache Spark, Kafka, Celery, Redis, SQLAlchemy, AWS, Kubernetes, Generative AI, Agentic AI"></div>
+    <div class="field"><label>Highlighted tags</label><input id="techHighlight" type="text" value="Python, FastAPI, Django, Generative AI, Agentic AI"><div class="field-hint">These appear in charcoal (bold)</div></div>
+    <div style="font-family:'DM Mono',monospace;font-size:10px;color:#aaa;letter-spacing:.06em;text-transform:uppercase;margin:10px 0 6px;">Soft skills <span style="color:#ccc;font-weight:400">— optional, leave blank to hide</span></div>
+    <div class="field"><label>All tags (comma-separated)</label><input id="softSkills" type="text" value=""></div>
+    <div class="field"><label>Highlighted soft skills</label><input id="softHighlight" type="text" value=""><div class="field-hint">These appear in charcoal (bold)</div></div>
+
+    <div class="form-section-label" data-section="quals"><span>Qualifications</span></div>
+    <div class="field"><label>Required (one per line)</label><textarea id="required" style="min-height:100px">5+ years backend engineering with production ownership
+Hands-on production experience with generative AI or agentic AI
+Proficient in Python — FastAPI or Django preferred
+Experience building human and automated evals
+Deep async processing: Kafka, Celery, SQS, Redis
+Cloud-native on AWS with Kubernetes and CI/CD
+High autonomy — you handle ambiguity and move fast</textarea></div>
+    <div class="field"><label>Nice to have (one per line)</label><textarea id="niceToHave" style="min-height:72px">Experience training and deploying ML models in production
+Background in reinforcement learning
+Comfortable collaborating directly with PMs and customers</textarea></div>
+
+    <div class="form-section-label" data-section="quotes"><span>Quotes</span></div>
+    <!-- LinkedIn testimonial finder -->
+    <div id="liFinderBox" style="display:none;background:#f0f7ff;border:1px solid #c2d8f5;border-radius:6px;padding:12px;margin-bottom:10px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:#2d6bc4;margin-bottom:8px;display:flex;align-items:center;gap:6px;">
+        <span>⟐</span> Find testimonial candidates on LinkedIn
+      </div>
+      <p style="font-size:11px;color:#555;line-height:1.6;margin-bottom:10px;">Based on the role, here are searches to find real Klaviyo employees who could give you a quote. Click a link → find someone → reach out directly.</p>
+      <div id="liSearchLinks" style="display:flex;flex-direction:column;gap:6px;"></div>
+      <p style="font-size:10px;color:#aaa;margin-top:8px;line-height:1.5;">Tip: look for people who've been at Klaviyo 1+ years and are active on LinkedIn.</p>
+      <button id="dmCopyBtn" style="width:100%;margin-top:10px;background:white;border:1px solid #c2d8f5;border-radius:4px;padding:8px;font-family:'Instrument Sans',sans-serif;font-size:12px;font-weight:500;color:#2d6bc4;cursor:pointer;">📋 Copy outreach DM template</button>
+      <div id="dmStatus" style="font-size:10px;color:#2e7d32;margin-top:4px;min-height:12px;text-align:center;"></div>
+    </div>
+
+    <div id="quotesFormList"></div>
+    <button id="addQuoteBtn" style="width:100%;border:1px dashed var(--border);background:transparent;border-radius:4px;padding:9px;font-family:'Instrument Sans',sans-serif;font-size:12px;color:#888;cursor:pointer;margin-bottom:8px;">+ Add another quote</button>
+
+    <div class="form-section-label" data-section="cult"><span>Built different (culture cards)</span></div>
+
+    <div class="card-group">
+      <div class="card-group-title">Culture card 1</div>
+      <div class="field"><label>Headline</label><input id="cult1Title" type="text" value="People who run toward change."></div>
+      <div class="field"><label>Quote</label><textarea id="cult1Quote" style="min-height:56px">If you just want to fit into the machine as another cog and go home — Klaviyo's not the place for you. You need to see change as an opportunity.</textarea></div>
+      <div class="field"><label>Highlighted phrase (exact match)</label><input id="cult1Highlight" type="text" value="You need to see change as an opportunity."><div class="field-hint">This phrase turns Poppy in the quote</div></div>
+    </div>
+
+    <div class="card-group">
+      <div class="card-group-title">Culture card 2</div>
+      <div class="field"><label>Headline</label><input id="cult2Title" type="text" value="High agency is expected."></div>
+      <div class="field"><label>Quote</label><textarea id="cult2Quote" style="min-height:56px">We really favor people with high amounts of accountability and willingness to work autonomously.</textarea></div>
+      <div class="field"><label>Highlighted phrase</label><input id="cult2Highlight" type="text" value="accountability"><div class="field-hint">This phrase turns Poppy in the quote</div></div>
+    </div>
+
+    <div class="card-group">
+      <div class="card-group-title">Culture card 3 <span style="color:#bbb;font-weight:400">— optional</span></div>
+      <div class="field"><label>Headline</label><input id="cult3Title" type="text" value="Ownership means end-to-end responsibility."></div>
+      <div class="field"><label>Quote</label><textarea id="cult3Quote" style="min-height:56px">When you build something, you own it, you deploy it, you operate it.</textarea></div>
+      <div class="field"><label>Highlighted phrase</label><input id="cult3Highlight" type="text" value="own it, you deploy it, you operate it"></div>
+    </div>
+
+    <div class="card-group">
+      <div class="card-group-title">Culture card 4 <span style="color:#bbb;font-weight:400">— optional</span></div>
+      <div class="field"><label>Headline</label><input id="cult4Title" type="text" value="This is for builders, not passengers."></div>
+      <div class="field"><label>Quote</label><textarea id="cult4Quote" style="min-height:56px">If you see an important problem that needs solving, generally you can go solve it. That level of freedom is somewhat unique here.</textarea></div>
+      <div class="field"><label>Highlighted phrase</label><input id="cult4Highlight" type="text" value="you can go solve it."></div>
+    </div>
+
+    <div class="form-section-label" data-section="cta"><span>CTA</span></div>
+    <div class="field"><label>CTA title</label><input id="ctaTitle" type="text" value="You got what it takes. We got the scale."></div>
+    <div class="field"><label>CTA subtitle</label><textarea id="ctaSub" style="min-height:56px">Join the team building agentic systems at scale — with people who are just as ambitious as you, and who don't do "good enough."</textarea></div>
+
+    <div class="form-section-label" data-section="tracking"><span>Analytics & sharing</span></div>
+
+    <div class="field">
+      <label>GA4 Measurement ID <span style="color:#bbb;font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+      <input id="ga4Id" type="text" placeholder="G-XXXXXXXXXX">
+      <div class="field-hint">Tracks page views + apply clicks. Free via <a href="https://analytics.google.com" target="_blank" style="color:var(--poppy)">Google Analytics</a>.</div>
+    </div>
+
+    <div class="field">
+      <label>Live page URL <span style="color:#bbb;font-weight:400;text-transform:none;letter-spacing:0">(for UTM share links)</span></label>
+      <input id="pageUrl" type="text" placeholder="https://your-page.vercel.app">
+      <div class="field-hint">Paste your Vercel URL to auto-generate UTM-tagged share links below.</div>
+    </div>
+    <div id="utmLinks" style="display:none;background:#fafafa;border:1px solid var(--border);border-radius:6px;padding:12px;margin-top:4px;">
+      <div style="font-family:'Klaviyo Degular',sans-serif;font-size:13px;font-weight:500;color:var(--charcoal);margin-bottom:10px;">UTM share links</div>
+      <div id="utmLinkList" style="display:flex;flex-direction:column;gap:6px;"></div>
+      <div style="font-size:10px;color:#aaa;margin-top:8px;">Drop these into your campaigns — GA4 will automatically attribute applications by source.</div>
+    </div>
+
+  </div>
+
+  <!-- PREVIEW PANEL -->
+  <div class="preview-panel" style="display:flex;flex-direction:column;">
+    <div style="background:var(--charcoal);padding:8px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;">
+      <span style="font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.4);letter-spacing:.08em;text-transform:uppercase;">Live preview</span>
+      <div style="display:flex;gap:6px;">
+        <button id="viewDesktop" onclick="setPreviewWidth('100%')" style="font-family:'Instrument Sans',sans-serif;font-size:11px;font-weight:500;padding:4px 12px;border-radius:2px;cursor:pointer;background:var(--poppy);color:white;border:none;">Desktop</button>
+        <button id="viewMobile" onclick="setPreviewWidth('390px')" style="font-family:'Instrument Sans',sans-serif;font-size:11px;font-weight:500;padding:4px 12px;border-radius:2px;cursor:pointer;background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.15);">Mobile</button>
+      </div>
+    </div>
+    <div style="flex:1;overflow:hidden;position:relative;display:flex;justify-content:center;background:#888;">
+      <iframe id="preview" sandbox="allow-same-origin allow-scripts" style="width:100%;height:100%;border:none;transition:width .3s;"></iframe>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const CDN = 'https://cdn.jsdelivr.net/gh/maasawalker/klaviyo-ai-eng-recruiting-page@main/deploy';
+
+const LOGO_SVG = `<svg width="110" height="33" viewBox="0 0 584 174" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M320.603 23.1624C320.602 20.0664 321.819 17.0933 323.993 14.8799C326.167 12.6665 329.125 11.3889 332.233 11.3208C335.39 11.3562 338.407 12.6215 340.639 14.8455C342.87 17.0695 344.138 20.0754 344.17 23.219C344.093 26.3151 342.8 29.2575 340.568 31.4144C338.336 33.5713 335.343 34.7706 332.233 34.7549C329.152 34.737 326.203 33.5096 324.025 31.3391C321.847 29.1686 320.618 26.2304 320.603 23.1624ZM413.327 48.2606C418.944 48.2606 422.638 51.4077 422.638 58.2342C422.638 62.0832 421.058 68.5474 417.716 77.6493C413.168 89.8871 408.405 103.88 403.311 119.785C401.038 112.098 396.638 99.8494 391.204 85.8229L386.542 72.9172C383.905 65.7512 382.495 60.1587 382.495 56.4795C382.495 51.4077 384.962 48.5549 389.703 48.0907V45.8266H349.787V48.0907C355.232 48.6115 359.621 53.6832 365.419 69.0795L390.703 135.702C394.046 144.442 393.693 152.31 389.657 159.476C386.667 165.77 382.631 168.918 377.709 168.918C371.569 168.918 368.398 166.291 368.398 160.868C368.398 158.774 372.445 154.574 372.445 150.555C372.445 144.963 368.056 142.336 363.134 142.336C356.312 142.336 351.765 147.057 351.765 154.223C351.935 164.717 360.86 173.638 372.843 173.638C378.982 174.159 383.905 171.012 387.236 168.216C389.35 166.642 391.977 161.219 393.386 158.604C394.455 156.527 395.338 154.36 396.024 152.129C397.252 149.151 397.957 146.706 398.48 145.133C399.003 143.559 400.06 140.933 401.288 136.914L404.096 127.993C411.656 104.559 418.875 84.1022 425.697 66.7927C429.744 56.8304 434.962 50.9436 437.6 49.6643C439.024 48.9061 440.558 48.3751 442.148 48.0907V45.8266H413.362L413.327 48.2606ZM136.097 130.982C131.004 130.11 126.615 125.559 126.615 115.936V0L97.636 6.29441V8.7397C102.547 8.21894 107.47 12.5888 107.47 21.8605V115.936C107.47 124.993 102.547 130.28 97.636 130.982C97.1585 131.061 96.6924 131.117 96.249 131.151C93.7357 131.322 91.2186 130.879 88.9161 129.861C84.7277 127.912 81.2656 124.695 79.0251 120.668L65.6099 99.306C62.7907 94.8169 58.5899 91.3554 53.6338 89.4377C48.6778 87.5199 43.232 87.2487 38.1085 88.6644L53.2064 72.0455C64.6321 59.4568 75.1597 51.4077 85.1757 48.0907V45.8266H51.9786V48.0907C60.5848 51.4077 60.0618 58.7549 50.2278 70.3021L28.9793 94.9588V0L0 6.29441V8.7397C4.92273 8.7397 9.83409 13.6416 9.83409 22.2114V115.936C9.83409 126.261 5.09326 130.28 0 130.982V133.246H38.461V130.982C32.1399 130.11 28.9793 125.208 28.9793 115.936V98.6268L37.2331 89.5701L57.2537 122.265C61.9946 130.189 66.3488 133.28 73.4089 133.28H140.19V131.491C140.19 131.491 138.325 131.321 136.097 130.982ZM225.252 131.253V133.517C225.252 133.517 205.538 140.604 199.581 128.604C198.013 125.43 197.163 121.952 197.091 118.415C191.645 129.6 179.708 135.555 168.464 135.555C154.242 135.555 144.055 128.91 144.055 114.397C144.064 110.745 145.164 107.178 147.216 104.151C151.434 97.8569 156.311 94.5399 165.486 91.0418C170.033 89.2871 173.91 88.0644 176.854 87.1927C179.799 86.321 183.676 85.438 188.223 84.5663L197 82.472V71.9323C197 54.4417 189.451 46.5738 178.912 46.5738C170.658 46.5738 165.918 51.9964 165.918 58.2908C165.918 61.7889 168.373 66.8606 168.373 70.5285C168.373 75.4305 163.985 78.9286 157.834 78.9286C152.048 78.9286 148.535 74.2078 148.535 67.9134C148.535 61.438 151.695 55.8455 158.187 50.9323C164.415 46.1196 172.087 43.5319 179.97 43.5851C204.617 43.5851 215.395 55.2342 215.77 80.8078V119.842C215.907 122.389 216.623 132.623 225.252 131.253ZM197.091 85.0418C196.034 85.5739 193.578 86.4456 189.542 88.0192L181.459 90.9965C179.435 91.9248 177.946 92.7399 174.967 94.3135C172.673 95.3953 170.59 96.8749 168.817 98.6833C165.844 102.029 164.11 106.288 163.905 110.751C163.905 121.076 169.522 126.668 178.128 126.668C182.516 126.668 186.734 124.914 190.77 121.597C194.988 118.268 197.091 113.548 197.091 107.785V85.0418ZM522.241 89.5701C522.327 95.6019 521.203 101.59 518.937 107.184C516.671 112.779 513.307 117.867 509.042 122.151C505.004 126.405 500.137 129.793 494.739 132.109C489.341 134.424 483.525 135.619 477.647 135.619C471.769 135.619 465.953 134.424 460.555 132.109C455.156 129.793 450.289 126.405 446.252 122.151C437.758 113.423 433.081 101.7 433.246 89.5475C433.156 83.558 434.26 77.6102 436.494 72.0486C438.729 66.4871 442.049 61.4222 446.263 57.1474C450.268 52.8389 455.125 49.4013 460.527 47.0503C465.93 44.6993 471.762 43.4857 477.658 43.4857C483.554 43.4857 489.387 44.6993 494.789 47.0503C500.192 49.4013 505.048 52.8389 509.053 57.1474C513.329 61.3863 516.702 66.4406 518.97 72.0077C521.238 77.5749 522.354 83.5405 522.253 89.5475L522.241 89.5701ZM493.535 58.5964C490.056 51.804 485.474 47.8757 480.131 46.8002C469.262 44.6266 459.667 55.7436 456.086 73.4267C454.54 81.3562 454.157 89.467 454.949 97.506C455.73 105.552 457.976 113.389 461.577 120.634C465.056 127.427 469.638 131.366 474.981 132.431C485.85 134.616 495.729 123.012 499.333 105.159C502.391 90.2154 500.868 72.0455 493.535 58.5964ZM342.42 115.936V45.8153H280.607V47.9209C288.861 49.1436 292.783 55.3474 289.031 65.4002C269.704 117.691 270.943 115.348 269.704 119.536C268.476 115.517 265.668 105.623 261.098 93.2041C256.528 80.7852 253.526 72.5776 252.389 68.8983C247.649 54.3851 249.229 48.9624 256.937 48.0907V45.8266H216.85V48.0907C222.83 49.3134 228.094 56.1398 232.482 68.3776L238.633 84.2946C245.386 101.48 253.322 125.219 255.982 133.257H269.295C273.581 120.804 290.771 71.1512 293.067 66.1021C295.546 60.3512 298.365 55.9927 301.514 52.9813C304.727 49.9012 308.982 48.132 313.44 48.0228C313.44 48.0228 323.093 47.604 323.093 57.3059V115.936C323.093 125.74 318.352 130.28 313.44 130.982V133.246H351.719V130.982C346.626 130.28 342.42 125.74 342.42 115.936Z" fill="white"/><path d="M536.321 119.266C534.802 117.748 532.737 116.917 530.51 116.917C528.283 116.917 526.218 117.748 524.699 119.266C523.176 120.778 522.341 122.834 522.341 125.052C522.341 127.269 523.176 129.326 524.699 130.838C526.223 132.35 528.283 133.186 530.51 133.186C532.737 133.186 534.802 132.355 536.321 130.843C537.844 129.366 538.679 127.31 538.679 125.052C538.679 122.794 537.844 120.778 536.321 119.266Z" fill="white"/><path d="M516.785 0H583.975L570.719 22.9133L583.975 45.8152H516.785V0Z" fill="white"/></svg>`;
+
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function highlight(text, phrase) {
+  if (!phrase) return esc(text);
+  const parts = text.split(phrase);
+  if (parts.length < 2) return esc(text);
+  return parts.map(p => esc(p)).join(`<em style="font-style:normal;font-weight:600;color:#FF4B32;">${esc(phrase)}</em>`);
+}
+
+function bullets(text) {
+  return text.split('\n').filter(l => l.trim()).map(l => `<li>${esc(l.trim())}</li>`).join('');
+}
+
+function tags(allText, hlText) {
+  const hlSet = new Set((hlText || '').split(',').map(t => t.trim().toLowerCase()).filter(Boolean));
+  return allText.split(',').map(t => {
+    const label = t.trim();
+    const isHl = hlSet.has(label.toLowerCase());
+    return `<span class="tag${isHl ? ' hl' : ''}">${esc(label)}</span>`;
+  }).join('');
+}
+
+function whyCard(title, desc, l1, l2) {
+  return `<div class="why-card">
+    <div class="why-title">${esc(title)}</div>
+    <p class="why-desc">${esc(desc)}</p>
+    <ul class="why-links"><li>${esc(l1)}</li><li>${esc(l2)}</li></ul>
+  </div>`;
+}
+
+function cultCard(title, quote, highlight_phrase) {
+  return `<div style="background:var(--white);padding:32px;">
+    <p style="font-family:var(--f-headline);font-size:22px;font-weight:600;color:var(--charcoal);margin-bottom:16px;letter-spacing:-.02em;line-height:1.2;">${esc(title)}</p>
+    <p style="font-size:16px;color:rgba(29,30,32,.78);line-height:1.65;">&ldquo;${highlight(quote, highlight_phrase)}&rdquo;</p>
+  </div>`;
+}
+
+function show(key, d) { return !d.sections || d.sections[key] !== false; }
+
+// ── Ticker builder: 1–4 phrases, repeated to fill a seamless loop ──
+function buildTicker(d) {
+  const phrases = [d.ticker1, d.ticker2, d.ticker3, d.ticker4]
+    .map(p => (p || '').trim()).filter(Boolean);
+  if (!phrases.length) return '';
+  // Repeat until we have at least 8 items (for seamless loop)
+  const items = [];
+  while (items.length < 8) {
+    phrases.forEach(p => { if (items.length < 16) items.push(p); });
+  }
+  // Duplicate the set for seamless animation
+  const full = [...items, ...items];
+  const flagImg = `<img class="ticker-flag-mark" src="${CDN}/assets/flag/Flag-Mark-White.png" alt="">`;
+  return full.map(p =>
+    `<span class="ticker-item">${flagImg}<span class="ticker-text">${esc(p)}</span></span>`
+  ).join('');
+}
+
+// ── Hero title: highlight the Poppy phrase inside the full headline ──
+function heroTitle(headline, poppyPhrase) {
+  if (!headline) return '';
+  const lines = headline.split('\n');
+  if (!poppyPhrase || !headline.includes(poppyPhrase)) {
+    return lines.map(l => esc(l)).join('<br>');
+  }
+  return lines.map(l => {
+    if (!l.includes(poppyPhrase)) return esc(l);
+    const idx = l.indexOf(poppyPhrase);
+    return esc(l.slice(0, idx))
+      + `<em style="font-style:italic;color:var(--poppy)">${esc(poppyPhrase)}</em>`
+      + esc(l.slice(idx + poppyPhrase.length));
+  }).join('<br>');
+}
+
+// ── JD Parser ──
+const TECH_KEYWORDS = ['Python','FastAPI','Django','Flask','Kafka','Celery','SQS','RabbitMQ','Redis','Spark','Hadoop','SQLAlchemy','Alembic','AWS','Kubernetes','Docker','Terraform','PostgreSQL','MySQL','MongoDB','React','TypeScript','JavaScript','Go','Rust','Java','Scala','Airflow','dbt','Snowflake','BigQuery','Redshift','LangChain','OpenAI','PyTorch','TensorFlow','Scikit-learn','Pandas','NumPy','RAG','LLM','GPT','Claude','Gemini','generative AI','agentic AI','MLflow','Kubeflow','SageMaker','GCP','Azure','CI/CD','GitHub Actions','Figma','Salesforce','HubSpot','Marketo','Google Analytics','Tableau','Power BI','Excel','SQL','Looker'];
+
+const SOFT_KEYWORDS = ['communication','collaboration','cross-functional','stakeholder','leadership','analytical','problem-solving','strategic','creative','empathy','adaptable','organized','detail-oriented','self-starter','motivated','curious','ownership','accountability','autonomous','fast-paced'];
+
+function parseJD(text) {
+  const filled = {};
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+
+  // ── Job title ──
+  for (const l of lines) {
+    const m = l.match(/job\s*title[:\s]+(.+)/i);
+    if (m) { filled.jobTitle = m[1].trim(); break; }
+  }
+  if (!filled.jobTitle) {
+    // First short non-nav line
+    for (const l of lines) {
+      if (l.length > 4 && l.length < 80 && !/^(home|about|careers|search|login|sign)/i.test(l)) {
+        filled.jobTitle = l; break;
+      }
+    }
+  }
+
+  // ── Location ──
+  const locMatch = text.match(/\b([A-Z][a-z]+(?:\s[A-Z][a-z]+)?,\s*[A-Z]{2})\b/);
+  if (locMatch) filled.location = locMatch[1];
+  const remoteMatch = text.match(/\b(remote|hybrid|on-?site)\b/i);
+  if (!locMatch && remoteMatch) filled.location = remoteMatch[1].charAt(0).toUpperCase() + remoteMatch[1].slice(1).toLowerCase();
+
+  // ── Salary ──
+  const salMatch = text.match(/\$(\d[\d,]+)\s*[–—-]\s*\$(\d[\d,]+)/);
+  if (salMatch) {
+    filled.salaryMin = '$' + salMatch[1];
+    filled.salaryMax = '$' + salMatch[2];
+  }
+
+  // ── Hero headline (generate from title) ──
+  if (filled.jobTitle) {
+    filled.heroHeadline = `Join us as a ${filled.jobTitle}.`;
+    filled.heroPoppy = filled.jobTitle + '.';
+  }
+
+  // ── Hero subtitle — first paragraph-like block ──
+  let introText = '';
+  let pastTitle = false;
+  for (const line of lines) {
+    if (!pastTitle && filled.jobTitle && line.includes(filled.jobTitle)) { pastTitle = true; continue; }
+    if (pastTitle && line.length > 60 && !/^[-•·*]/.test(line) && !/^\d+\./.test(line)) {
+      introText = line; break;
+    }
+  }
+  // Fallback: look for "At [Company]" opener
+  if (!introText) {
+    const atMatch = text.match(/At [A-Z][a-z]+,.{40,200}/);
+    if (atMatch) introText = atMatch[0];
+  }
+  if (introText) filled.heroSub = introText.slice(0, 300);
+
+  // ── Pill suggestions ──
+  if (filled.salaryMin && filled.salaryMax) {
+    const fmt = s => s.replace('$', '').replace(',000', 'K');
+    filled.pill1 = `${fmt(filled.salaryMin)} – ${fmt(filled.salaryMax)}`;
+  }
+
+  // ── Section parsing ──
+  const respHeaders   = /how you will make a difference|what you.ll do|responsibilities|what you.re building|your role|key responsibilities|the role|what you.ll work on/i;
+  const timeHeaders   = /how you.ll spend|day.to.day|what you.ll be doing|in this role you.ll|your day/i;
+  const qualHeaders   = /who you are|qualifications|requirements|what you.ll need|must.have|you have|the core profile|we.re looking for|what we.re looking for/i;
+  const niceHeaders   = /nice to have|preferred|bonus|plus if you|you.d love/i;
+  const stopHeaders   = /equal opportunity|benefits|compensation|about us|get to know|our story|our values|salary|base pay/i;
+
+  let mode = null;
+  const resp = [], timeItems = [], req = [], nice = [];
+
+  for (const line of lines) {
+    if (stopHeaders.test(line) && line.length < 80) { mode = null; continue; }
+    if (respHeaders.test(line) && line.length < 80)  { mode = 'resp'; continue; }
+    if (timeHeaders.test(line) && line.length < 80)  { mode = 'time'; continue; }
+    if (qualHeaders.test(line) && line.length < 80)  { mode = 'req';  continue; }
+    if (niceHeaders.test(line) && line.length < 80)  { mode = 'nice'; continue; }
+
+    const isBullet = /^[-•·*]/.test(line) || /^\d+[\.\)]/.test(line);
+    const cleaned = line.replace(/^[-•·*\d.)\s]+/, '').trim();
+    if (!cleaned || cleaned.length < 8) continue;
+
+    if (mode === 'resp' && isBullet && resp.length < 7) resp.push(cleaned);
+    if (mode === 'time' && isBullet && timeItems.length < 7) timeItems.push(cleaned);
+    if (mode === 'req'  && isBullet && req.length < 12) req.push(cleaned);
+    if (mode === 'nice' && isBullet && nice.length < 6) nice.push(cleaned);
+    // Non-bulleted qualifications (numbered or plain lines in qual sections)
+    if (mode === 'req' && !isBullet && cleaned.length > 20 && /\d|\byear|\bexperience|\bproficient/i.test(cleaned) && req.length < 12) req.push(cleaned);
+  }
+
+  if (resp.length)      filled.building = resp.join('\n');
+  if (timeItems.length) filled.time = timeItems.join('\n');
+  else if (resp.length) filled.time = resp.slice(0, 4).join('\n'); // fallback: reuse first bullets
+  if (req.length)       filled.required = req.join('\n');
+  if (nice.length)      filled.niceToHave = nice.join('\n');
+
+  // ── Tech / hard skills scan ──
+  const foundTech = TECH_KEYWORDS.filter(t =>
+    new RegExp('\\b' + t.replace(/[+.]/g, '\\$&') + '\\b', 'i').test(text));
+  if (foundTech.length) filled.techTags = [...new Set(foundTech)].join(', ');
+
+  // ── Soft skills scan ──
+  const foundSoft = SOFT_KEYWORDS.filter(t =>
+    new RegExp('\\b' + t.replace(/[-]/g, '\\-') + '\\b', 'i').test(text));
+  if (foundSoft.length) filled.softSkills = [...new Set(foundSoft)].map(s =>
+    s.charAt(0).toUpperCase() + s.slice(1)).join(', ');
+
+  return filled;
+}
+
+function applyParsed(filled) {
+  const map = {
+    // Basic
+    jobTitle: 'jobTitle', location: 'location',
+    salaryMin: 'salaryMin', salaryMax: 'salaryMax',
+    // Hero
+    heroHeadline: 'heroHeadline', heroPoppy: 'heroPoppy',
+    heroSub: 'heroSub', pill1: 'pill1', pill2: 'pill2',
+    // Role
+    building: 'building', time: 'time',
+    required: 'required', niceToHave: 'niceToHave',
+    techTags: 'techTags', softSkills: 'softSkills',
+    // Why Klaviyo
+    whyTitle: 'whyTitle', whyTitlePoppy: 'whyTitlePoppy',
+    why1Title: 'why1Title', why1Desc: 'why1Desc', why1Link1: 'why1Link1', why1Link2: 'why1Link2',
+    why2Title: 'why2Title', why2Desc: 'why2Desc', why2Link1: 'why2Link1', why2Link2: 'why2Link2',
+    why3Title: 'why3Title', why3Desc: 'why3Desc', why3Link1: 'why3Link1', why3Link2: 'why3Link2',
+    why4Title: 'why4Title', why4Desc: 'why4Desc', why4Link1: 'why4Link1', why4Link2: 'why4Link2',
+    // Culture — intentionally excluded: Built Different stays as manually set
+    // Ticker
+    ticker1: 'ticker1', ticker2: 'ticker2', ticker3: 'ticker3', ticker4: 'ticker4',
+    // CTA
+    ctaTitle: 'ctaTitle', ctaSub: 'ctaSub',
+  };
+  let count = 0;
+  for (const [key, id] of Object.entries(map)) {
+    if (filled[key]) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.value = filled[key];
+        el.classList.remove('reviewed');
+        el.classList.add('autofilled');
+        count++;
+      }
+    }
+  }
+  return count;
+}
+
+// Mark any field as "reviewed" when user types in it
+document.addEventListener('input', function(e) {
+  const el = e.target;
+  if ((el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') && el.closest('.form-panel')) {
+    el.classList.remove('autofilled');
+    el.classList.add('reviewed');
+  }
+}, true);
+
+
+function generatePage(d) {
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${esc(d.jobTitle)} — Klaviyo Careers</title>
+<meta name="description" content="${esc((d.heroSub||'').slice(0,160))}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="${esc(d.jobTitle)} — Klaviyo Careers">
+<meta property="og:description" content="${esc((d.heroSub||'').slice(0,200))}">
+<meta property="og:image" content="${CDN}/assets/flag/Flag-Background-01.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@klaviyo">
+<meta name="twitter:title" content="${esc(d.jobTitle)} — Klaviyo Careers">
+<meta name="twitter:description" content="${esc((d.heroSub||'').slice(0,200))}">
+<meta name="twitter:image" content="${CDN}/assets/flag/Flag-Background-01.png">
+${d.ga4Id ? `<script async src="https://www.googletagmanager.com/gtag/js?id=${esc(d.ga4Id)}"><\/script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${esc(d.ga4Id)}');<\/script>` : ''}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Klaviyo Degular';src:url('${CDN}/assets/fonts/KlaviyoDegular/KlaviyoDegular-Regular.otf') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Klaviyo Degular';src:url('${CDN}/assets/fonts/KlaviyoDegular/KlaviyoDegular-Italic.otf') format('opentype');font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:'Klaviyo Degular';src:url('${CDN}/assets/fonts/KlaviyoDegular/KlaviyoDegular-Medium.otf') format('opentype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Klaviyo Degular';src:url('${CDN}/assets/fonts/KlaviyoDegular/KlaviyoDegular-Semibold.otf') format('opentype');font-weight:600;font-style:normal;font-display:swap}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--poppy:#FF4B32;--charcoal:#1D1E20;--white:#FFFFFF;--mist:#F3F2F1;--zest:#DEFF00;--f-headline:'Klaviyo Degular','Plus Jakarta Sans',sans-serif;--f-body:'Instrument Sans',sans-serif;--f-mono:'DM Mono',monospace}
+html{scroll-behavior:smooth}
+body{font-family:var(--f-body);background:var(--white);color:var(--charcoal);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.container{max-width:1120px;margin:0 auto;padding:0 48px}
+nav{background:var(--charcoal);padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo img{height:28px;width:auto}
+.nav-cta{background:var(--poppy);color:var(--white);font-size:14px;font-weight:500;padding:8px 18px;border-radius:2px;display:inline-block}
+.hero{background:var(--charcoal);padding:54px 0 50px}
+.hero-content{max-width:780px;position:relative;padding-right:180px}
+.hero-sticker{position:absolute;top:0;right:0;height:160px;width:auto;opacity:.92;transform:rotate(4deg);pointer-events:none;z-index:3}
+/* Button hover motion */
+.btn-poppy,.btn-white,.sidebar-apply,.nav-cta{transition:transform .18s cubic-bezier(.22,1,.36,1),opacity .15s}
+.btn-poppy:hover,.btn-white:hover,.nav-cta:hover{transform:translateY(-2px);opacity:.9}
+.sidebar-apply:hover{transform:translateY(-1px);opacity:.88}
+/* Ghost links and footer links underline on hover */
+.btn-ghost:hover,.footer-links a:hover{text-decoration:underline;text-underline-offset:3px}
+/* Quote carousel */
+.quotes-section{background:var(--charcoal);padding:52px 0;overflow:hidden}
+.quotes-section .section-eyebrow{color:var(--poppy)}
+.quotes-section .section-title{color:var(--white)}
+.quotes-carousel{position:relative;margin-top:40px}
+.quotes-track-wrap{overflow:hidden}
+.quotes-track{display:flex;transition:transform .4s cubic-bezier(.22,1,.36,1)}
+.quote-card{flex:0 0 100%;padding:0 48px;box-sizing:border-box}
+.quote-card-inner{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:36px;display:flex;flex-direction:column;max-width:800px;margin:0 auto}
+.quote-text{font-family:var(--f-headline);font-size:20px;font-weight:400;color:var(--white);line-height:1.5;letter-spacing:-.01em;flex:1;margin-bottom:24px}
+.quote-attribution{display:flex;align-items:center;gap:14px;margin-top:auto}
+.quote-photo{width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0;background:rgba(255,255,255,.15)}
+.quote-name{font-family:var(--f-mono);font-size:12px;font-weight:500;color:var(--white);letter-spacing:.08em;text-transform:uppercase}
+.quote-role{font-family:var(--f-mono);font-size:11px;color:rgba(255,255,255,.4);letter-spacing:.06em;text-transform:uppercase;margin-top:4px}
+.quote-arrows{display:flex;gap:12px;justify-content:center;margin-top:28px}
+.quote-arrow{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:var(--white);width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:background .15s;user-select:none}
+.quote-arrow:hover{background:var(--poppy);border-color:var(--poppy)}
+.quote-dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
+.quote-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:background .15s}
+.quote-dot.active{background:var(--poppy)}
+.hero-eyebrow{font-family:var(--f-mono);font-size:12px;font-weight:500;letter-spacing:.1em;color:var(--poppy);text-transform:uppercase;margin-bottom:24px}
+.hero-title{font-family:var(--f-headline);font-weight:400;font-size:clamp(40px,5.5vw,72px);line-height:1.05;letter-spacing:-.025em;color:var(--white);margin-bottom:28px}
+.hero-title em{font-style:italic;color:var(--poppy)}
+.hero-sub{font-size:17px;color:rgba(255,255,255,.68);max-width:680px;line-height:1.65;margin-bottom:40px}
+.hero-pills{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:40px}
+.hero-pill{background:var(--zest);color:var(--charcoal);border-radius:100px;padding:8px 20px;font-size:13px;font-weight:500}
+.hero-actions{display:flex;gap:16px;align-items:center}
+.btn-poppy{background:var(--poppy);color:var(--white);font-size:15px;font-weight:500;padding:9px 20px;border-radius:2px;display:inline-block}
+.btn-ghost{font-size:15px;font-weight:500;color:rgba(255,255,255,.65);display:inline-block}
+.ticker-wrap{background:var(--poppy);overflow:hidden}
+.ticker-track{display:flex;white-space:nowrap;animation:ticker 32s linear infinite;height:40px;align-items:center}
+.ticker-item{display:inline-flex;align-items:center;flex-shrink:0}
+.ticker-text{font-family:var(--f-mono);font-size:12px;font-weight:500;color:var(--white);letter-spacing:.1em;text-transform:uppercase;padding:0 20px;white-space:nowrap}
+.ticker-flag-mark{display:inline-block;flex-shrink:0;height:12px;width:auto;opacity:.85}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+section{padding:52px 0}
+.section-eyebrow{font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.1em;color:var(--poppy);text-transform:uppercase;margin-bottom:16px}
+.section-title{font-family:var(--f-headline);font-weight:400;font-size:clamp(28px,3.5vw,44px);line-height:1.1;letter-spacing:-.02em;color:var(--charcoal);margin-bottom:20px}
+.why{background:var(--mist)}
+.why-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;margin-top:32px}
+.why-card{background:var(--white);padding:28px 24px;display:flex;flex-direction:column}
+.why-title{font-family:var(--f-headline);font-size:18px;font-weight:500;color:var(--charcoal);margin-bottom:10px}
+.why-desc{font-size:14px;line-height:1.7;color:rgba(29,30,32,.65);margin-bottom:16px;flex:1}
+.why-links{list-style:none;border-top:1px solid var(--mist);padding-top:14px;display:flex;flex-wrap:wrap;gap:6px 0}
+.why-links li{width:50%;font-size:12px;font-weight:500;padding-left:14px;position:relative}
+.why-links li::before{content:'→';position:absolute;left:0;color:var(--poppy);font-size:11px}
+.role{background:var(--charcoal)}
+.role .section-title{color:var(--white)}
+.role-layout{display:grid;grid-template-columns:1fr 280px;gap:60px;align-items:start}
+.role-section{margin-bottom:32px}
+.role-section-label{font-family:var(--f-mono);font-size:11px;font-weight:500;letter-spacing:.08em;color:var(--poppy);text-transform:uppercase;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.1)}
+.role-list{list-style:none}
+.role-list li{padding:10px 0 10px 20px;font-size:15px;line-height:1.6;color:rgba(255,255,255,.8);border-bottom:1px solid rgba(255,255,255,.05);position:relative}
+.role-list li::before{content:'';position:absolute;left:0;top:20px;width:6px;height:6px;background:var(--poppy);border-radius:50%}
+.sidebar-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px;margin-bottom:10px}
+.sl{font-family:var(--f-mono);font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;margin-top:16px}
+.sl:first-child{margin-top:0}
+.sv{font-size:15px;font-weight:500;color:var(--white)}
+.salary{font-family:var(--f-headline);font-size:22px;font-weight:400;color:var(--white);line-height:1.2;letter-spacing:-.01em}
+.salary-note{font-size:11px;color:rgba(255,255,255,.35);margin-top:6px;line-height:1.5}
+.sidebar-apply{background:var(--poppy);color:var(--white);font-size:14px;font-weight:500;padding:12px;border-radius:2px;display:block;text-align:center}
+.stack{background:var(--mist)}
+.stack-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:32px}
+.tag{background:var(--white);border:1px solid rgba(29,30,32,.1);border-radius:6px;padding:9px 16px;font-family:var(--f-mono);font-size:13px;font-weight:400;color:var(--charcoal);transition:all .15s;cursor:default}
+.tag:hover{background:var(--charcoal);color:var(--white);border-color:var(--charcoal)}
+.tag.hl{background:var(--charcoal);color:var(--white);border-color:var(--charcoal)}
+.quals{background:var(--white)}
+.quals-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--mist);margin-top:40px}
+.quals-card{background:var(--white);padding:28px}
+.qcard-head{font-size:17px;font-weight:600;color:var(--charcoal);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.badge{font-family:var(--f-mono);font-size:10px;padding:3px 10px;border-radius:100px;text-transform:uppercase}
+.badge-req{background:var(--charcoal);color:var(--white)}
+.badge-opt{border:1px solid rgba(29,30,32,.18);color:rgba(29,30,32,.45)}
+.qlist{list-style:none}
+.qlist li{padding:10px 0 10px 20px;font-size:14px;line-height:1.6;color:rgba(29,30,32,.78);border-bottom:1px solid var(--mist);position:relative}
+.qlist li::before{content:'';position:absolute;left:0;top:19px;width:6px;height:6px;background:var(--poppy);border-radius:50%}
+.quals-footnote{margin-top:24px;padding-top:20px;border-top:1px solid var(--mist);font-size:13px;color:rgba(29,30,32,.5);line-height:1.7}
+.quals-footnote strong{color:var(--charcoal);display:block;font-size:14px;margin-bottom:4px}
+.cult{background:var(--mist)}
+.cta-wrap{background:var(--poppy);padding:60px 48px;text-align:center;position:relative;overflow:hidden}
+.cta-flag{position:absolute;inset:0;background-image:url('${CDN}/assets/flag/Flag-Background-03.png');background-size:cover;background-position:center center;background-repeat:no-repeat;opacity:1;pointer-events:none}
+.cta-scrim{position:absolute;inset:0;background:rgba(29,30,32,.18);pointer-events:none}
+.cta-content{position:relative;z-index:1}
+.cta-title{font-family:var(--f-headline);font-weight:400;font-size:clamp(28px,4vw,48px);line-height:1.1;letter-spacing:-.02em;color:var(--white);max-width:560px;margin:0 auto 16px}
+.cta-sub{font-size:17px;color:rgba(255,255,255,.75);max-width:640px;margin:0 auto 40px;line-height:1.65}
+.btn-white{background:var(--white);color:var(--charcoal);font-size:15px;font-weight:500;padding:10px 24px;border-radius:2px;display:inline-block}
+footer{background:var(--charcoal);padding:22px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+footer img{height:24px;width:auto}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:13px;color:rgba(255,255,255,.38);font-weight:500}
+.footer-links a:hover{color:var(--white);text-decoration:underline}
+.footer-copy{font-size:12px;color:rgba(255,255,255,.22)}
+/* Sticky share sidebar — desktop only */
+.share-sidebar{position:fixed;right:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:8px;z-index:50}
+.share-btn{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--charcoal);border:1px solid rgba(255,255,255,.12);cursor:pointer;transition:all .2s;color:white;text-decoration:none;font-size:15px;}
+.share-btn:hover{background:var(--poppy);border-color:var(--poppy);transform:scale(1.1)}
+.share-btn svg{display:block}
+/* "Know someone?" share strip */
+.share-strip{background:var(--mist);padding:40px 48px;text-align:center}
+.share-strip-title{font-family:var(--f-headline);font-size:22px;font-weight:400;color:var(--charcoal);margin-bottom:8px;letter-spacing:-.01em}
+.share-strip-sub{font-size:15px;color:rgba(29,30,32,.55);margin-bottom:24px}
+.share-strip-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.share-strip-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;border-radius:2px;font-family:var(--f-body);font-size:14px;font-weight:500;cursor:pointer;text-decoration:none;transition:opacity .15s;border:none}
+.share-strip-btn:hover{opacity:.85}
+@media(max-width:640px){.share-sidebar{display:none}.share-strip{padding:40px 24px}}
+@media(max-width:640px){
+  .why-grid,.quals-grid,.role-layout{grid-template-columns:1fr!important}
+  .cult-grid{grid-template-columns:1fr!important}
+  .container{padding:0 20px}
+  /* Hero: full width, smaller flag */
+  .hero-content{padding-right:0!important;max-width:100%!important}
+  .hero-eyebrow,.hero-title,.hero-sub,.hero-pills,.hero-actions{max-width:100%!important;width:100%}
+  .hero-sticker{height:52px!important;top:0!important;right:0!important}
+  .hero-sub{font-size:15px}
+  .hero-actions{flex-wrap:wrap}
+  /* Quote: photo+name row always tight */
+  .quote-card-inner{padding:24px 20px}
+  .quote-text{font-size:17px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="https://www.klaviyo.com/careers" class="nav-logo">
+    <img src="${CDN}/assets/logos/Klaviyo-Logo-White.svg" alt="Klaviyo">
+  </a>
+  <a href="#apply" class="nav-cta">Apply now</a>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <img class="hero-sticker" src="${CDN}/assets/flag/Flag-Sticker.png" alt="" aria-hidden="true">
+      <p class="hero-eyebrow">${esc(d.jobTitle)} · ${esc(d.team)} · ${esc(d.location)}</p>
+      <h1 class="hero-title">${heroTitle(d.heroHeadline, d.heroPoppy)}</h1>
+      <p class="hero-sub">${esc(d.heroSub)}</p>
+      <div class="hero-pills">
+        ${d.pill1.trim() ? `<span class="hero-pill">${esc(d.pill1)}</span>` : ''}
+        ${d.pill2.trim() ? `<span class="hero-pill">${esc(d.pill2)}</span>` : ''}
+        ${d.pill3 && d.pill3.trim() ? `<span class="hero-pill">${esc(d.pill3)}</span>` : ''}
+        ${d.pill4 && d.pill4.trim() ? `<span class="hero-pill">${esc(d.pill4)}</span>` : ''}
+      </div>
+      <div class="hero-actions">
+        <a href="#apply" class="btn-poppy">Apply now</a>
+        <a href="#role" class="btn-ghost">See the full role ↓</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+${show('ticker',d) ? `<div class="ticker-wrap" aria-hidden="true">
+  <div class="ticker-track">
+    ${buildTicker(d)}
+  </div>
+</div>` : ''}
+
+${show('why',d) ? `<section class="why">
+  <div class="container">
+    <p class="section-eyebrow">Why Klaviyo</p>
+    <h2 class="section-title">${heroTitle(d.whyTitle, d.whyTitlePoppy)}</h2>
+    <div class="why-grid">
+      ${whyCard(d.why1Title, d.why1Desc, d.why1Link1, d.why1Link2)}
+      ${whyCard(d.why2Title, d.why2Desc, d.why2Link1, d.why2Link2)}
+      ${d.why3Title.trim() ? whyCard(d.why3Title, d.why3Desc, d.why3Link1, d.why3Link2) : ''}
+      ${d.why4Title.trim() ? whyCard(d.why4Title, d.why4Desc, d.why4Link1, d.why4Link2) : ''}
+    </div>
+  </div>
+</section>` : ''}
+
+${show('role',d) ? `<section class="role" id="role">
+  <div class="container">
+    <p class="section-eyebrow">The role</p>
+    <h2 class="section-title">${esc(d.jobTitle)}</h2>
+    <div class="role-layout">
+      <div>
+        <div class="role-section">
+          <p class="role-section-label">What you're actually building</p>
+          <ul class="role-list">${bullets(d.building)}</ul>
+        </div>
+        <div class="role-section">
+          <p class="role-section-label">How you'll spend your time</p>
+          <ul class="role-list">${bullets(d.time)}</ul>
+        </div>
+      </div>
+      <div style="position:sticky;top:80px">
+        <div class="sidebar-card">
+          <div class="sl">Base pay range (US)</div>
+          <div class="salary">${esc(d.salaryMin)} –<br>${esc(d.salaryMax)}</div>
+          <div class="salary-note">Plus equity, annual cash bonus, and comprehensive benefits</div>
+        </div>
+        <div class="sidebar-card">
+          <div class="sl">Team</div><div class="sv">${esc(d.team)}</div>
+          <div class="sl">Location</div><div class="sv">${esc(d.location)}</div>
+        </div>
+        <a href="#apply" class="sidebar-apply">Apply for this role →</a>
+      </div>
+    </div>
+  </div>
+</section>` : ''}
+
+${show('stack',d) && (d.techTags.trim() || (d.softSkills && d.softSkills.trim())) ? `<section class="stack">
+  <div class="container">
+    <p class="section-eyebrow">Skills</p>
+    <h2 class="section-title">What you'll bring.</h2>
+    ${d.techTags.trim() ? `<p style="font-family:var(--f-mono);font-size:11px;color:var(--poppy);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;margin-top:32px;">Technical</p>
+    <div class="stack-tags">${tags(d.techTags, d.techHighlight)}</div>` : ''}
+    ${d.softSkills && d.softSkills.trim() ? `<p style="font-family:var(--f-mono);font-size:11px;color:var(--poppy);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;margin-top:28px;">Soft skills</p>
+    <div class="stack-tags">${tags(d.softSkills, d.softHighlight)}</div>` : ''}
+  </div>
+</section>` : ''}
+
+${show('quals',d) ? `<section class="quals">
+  <div class="container">
+    <p class="section-eyebrow">Who you are</p>
+    <h2 class="section-title">The teammate we're looking for.</h2>
+    <div class="quals-grid">
+      <div class="quals-card">
+        <div class="qcard-head">The core profile <span class="badge badge-req">Required</span></div>
+        <ul class="qlist">${bullets(d.required)}</ul>
+      </div>
+      <div class="quals-card">
+        <div class="qcard-head">Adds a lot <span class="badge badge-opt">Bonus</span></div>
+        <ul class="qlist">${bullets(d.niceToHave)}</ul>
+        <div class="quals-footnote"><strong>Not a perfect match? Apply anyway.</strong>We care more about your trajectory and how you think than whether you hit every line item.</div>
+      </div>
+    </div>
+  </div>
+</section>` : ''}
+
+${show('quotes',d) && d.quotes && d.quotes.length ? `<section class="quotes-section">
+  <div class="container">
+    <p class="section-eyebrow">Life at Klaviyo</p>
+    <h2 class="section-title">Hear from our team.</h2>
+  </div>
+  <div class="quotes-carousel">
+    <div class="quotes-track-wrap">
+      <div class="quotes-track" id="qTrack">
+        ${d.quotes.map((q,i) => `<div class="quote-card">
+          <div class="quote-card-inner">
+            <p class="quote-text">&ldquo;${esc(q.quote)}&rdquo;</p>
+            <div class="quote-attribution">
+              ${q.image ? `<img class="quote-photo" src="${q.image}" alt="${esc(q.name)}">` : `<div class="quote-photo"></div>`}
+              <div>
+                <div class="quote-name">${esc(q.name)}</div>
+                <div class="quote-role">${esc(q.title)}</div>
+              </div>
+            </div>
+          </div>
+        </div>`).join('')}
+      </div>
+    </div>
+    ${d.quotes.length > 1 ? `
+    <div class="quote-arrows">
+      <div class="quote-arrow" id="qPrev">&#8592;</div>
+      <div class="quote-arrow" id="qNext">&#8594;</div>
+    </div>
+    <div class="quote-dots">
+      ${d.quotes.map((_,i) => `<div class="quote-dot${i===0?' active':''}" data-idx="${i}"></div>`).join('')}
+    </div>
+    <script>
+    (function(){
+      var track=document.getElementById('qTrack');
+      var dots=document.querySelectorAll('.quote-dot');
+      var cur=0,total=${d.quotes.length};
+      function go(n){cur=(n+total)%total;track.style.transform='translateX(-'+cur*100+'%)';dots.forEach(function(d,i){d.classList.toggle('active',i===cur)});}
+      document.getElementById('qPrev').addEventListener('click',function(){go(cur-1)});
+      document.getElementById('qNext').addEventListener('click',function(){go(cur+1)});
+      dots.forEach(function(d){d.addEventListener('click',function(){go(parseInt(d.dataset.idx))})});
+    })();
+    <\/script>` : ''}
+  </div>
+</section>` : ''}
+
+${show('cult',d) ? `<section class="cult">
+  <div class="container">
+    <p class="section-eyebrow">Culture</p>
+    <h2 class="section-title">Built <em style="font-style:italic">different.</em></h2>
+    <p style="font-size:17px;color:rgba(29,30,32,.6);max-width:520px;line-height:1.7;margin-bottom:40px;">This isn't for everyone. Here's who thrives.</p>
+  </div>
+  <div class="cult-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:2px;max-width:1120px;margin:0 auto;padding:0 48px">
+    ${cultCard(d.cult1Title, d.cult1Quote, d.cult1Highlight)}
+    ${cultCard(d.cult2Title, d.cult2Quote, d.cult2Highlight)}
+    ${d.cult3Title.trim() ? cultCard(d.cult3Title, d.cult3Quote, d.cult3Highlight) : ''}
+    ${d.cult4Title.trim() ? cultCard(d.cult4Title, d.cult4Quote, d.cult4Highlight) : ''}
+  </div>
+</section>` : ''}
+
+${show('cta',d) ? `<div class="cta-wrap" id="apply">
+  <div class="cta-flag" aria-hidden="true"></div>
+  <div class="cta-scrim" aria-hidden="true"></div>
+  <div class="cta-content">
+    <h2 class="cta-title">${esc(d.ctaTitle)}</h2>
+    <p class="cta-sub">${esc(d.ctaSub)}</p>
+    <a href="https://www.klaviyo.com/careers" class="btn-white">Apply now</a>
+  </div>
+</div>` : ''}
+
+<!-- Sticky share sidebar — desktop only -->
+<div class="share-sidebar" aria-label="Share this role">
+  <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(d.pageUrl||'')}" target="_blank" rel="noopener" class="share-btn" title="Share on LinkedIn">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+  </a>
+  <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(d.pageUrl||'')}&text=${encodeURIComponent('Now hiring: '+d.jobTitle+' at Klaviyo')}" target="_blank" rel="noopener" class="share-btn" title="Share on X">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+  </a>
+  <button class="share-btn" title="Copy link" onclick="navigator.clipboard.writeText('${esc(d.pageUrl||window.location.href)}');this.style.background='var(--poppy)';setTimeout(()=>this.style.background='',1500)" style="font-size:16px;">⎘</button>
+</div>
+
+<!-- "Know someone?" strip -->
+<div class="share-strip">
+  <p class="share-strip-title">Know someone who'd be great?</p>
+  <p class="share-strip-sub">Share this role — your friends deserve a job they actually rave about.</p>
+  <div class="share-strip-btns">
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(d.pageUrl||'')}" target="_blank" rel="noopener" class="share-strip-btn" style="background:#0a66c2;color:white;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+      Share on LinkedIn
+    </a>
+    <a href="https://twitter.com/intent/tweet?url=${encodeURIComponent(d.pageUrl||'')}&text=${encodeURIComponent('Now hiring: '+d.jobTitle+' at Klaviyo')}" target="_blank" rel="noopener" class="share-strip-btn" style="background:var(--charcoal);color:white;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.259 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      Share on X
+    </a>
+    <button onclick="navigator.clipboard.writeText('${esc(d.pageUrl||window.location.href)}');this.textContent='✓ Copied!';this.style.background='#2e7d32';setTimeout(()=>{this.textContent='⎘ Copy link';this.style.background=''},2000)" class="share-strip-btn" style="background:var(--mist);color:var(--charcoal);border:1px solid rgba(29,30,32,.12);">⎘ Copy link</button>
+  </div>
+</div>
+
+<footer>
+  <img src="${CDN}/assets/logos/Klaviyo-Logo-White.svg" alt="Klaviyo">
+  <div class="footer-links">
+    <a href="https://www.klaviyo.com/careers">All open roles</a>
+    <a href="https://www.klaviyo.com/about">About Klaviyo</a>
+  </div>
+  <p class="footer-copy">© 2026 Klaviyo, Inc.</p>
+</footer>
+${d.ga4Id ? `<script>
+document.querySelectorAll('a[href*="gh_jid"], .sidebar-apply, .nav-cta').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    if(typeof gtag!=='undefined') gtag('event','apply_click',{event_category:'recruiting',event_label:'${esc(d.jobTitle)}'});
+  });
+});
+<\/script>` : ''}
+
+</body>
+</html>`;
+}
+
+function collectData() {
+  const v = id => document.getElementById(id).value;
+  return {
+    jobTitle: v('jobTitle'), team: v('team'), location: v('location'),
+    salaryMin: v('salaryMin'), salaryMax: v('salaryMax'),
+    heroSub: v('heroSub'),
+    pill1: v('pill1'), pill2: v('pill2'),
+    ticker1: v('ticker1'), ticker2: v('ticker2'), ticker3: v('ticker3'), ticker4: v('ticker4'),
+    pill3: v('pill3'), pill4: v('pill4'),
+    heroHeadline: v('heroHeadline'), heroPoppy: v('heroPoppy'),
+    whyTitle: v('whyTitle'), whyTitlePoppy: v('whyTitlePoppy'),
+    why1Title: v('why1Title'), why1Desc: v('why1Desc'), why1Link1: v('why1Link1'), why1Link2: v('why1Link2'),
+    why2Title: v('why2Title'), why2Desc: v('why2Desc'), why2Link1: v('why2Link1'), why2Link2: v('why2Link2'),
+    why3Title: v('why3Title'), why3Desc: v('why3Desc'), why3Link1: v('why3Link1'), why3Link2: v('why3Link2'),
+    why4Title: v('why4Title'), why4Desc: v('why4Desc'), why4Link1: v('why4Link1'), why4Link2: v('why4Link2'),
+    building: v('building'), time: v('time'),
+    techTags: v('techTags'), techHighlight: v('techHighlight'),
+    softSkills: v('softSkills'), softHighlight: v('softHighlight'),
+    required: v('required'), niceToHave: v('niceToHave'),
+    ga4Id: v('ga4Id'), pageUrl: v('pageUrl'),
+    quotes: quoteData,
+    cult1Title: v('cult1Title'), cult1Quote: v('cult1Quote'), cult1Highlight: v('cult1Highlight'),
+    cult2Title: v('cult2Title'), cult2Quote: v('cult2Quote'), cult2Highlight: v('cult2Highlight'),
+    cult3Title: v('cult3Title'), cult3Quote: v('cult3Quote'), cult3Highlight: v('cult3Highlight'),
+    cult4Title: v('cult4Title'), cult4Quote: v('cult4Quote'), cult4Highlight: v('cult4Highlight'),
+    ctaTitle: v('ctaTitle'), ctaSub: v('ctaSub'),
+  };
+}
+
+function updatePreview() {
+  document.getElementById('preview').srcdoc = generatePage(collectData());
+}
+
+document.querySelectorAll('input, textarea').forEach(el => el.addEventListener('input', updatePreview));
+
+// copy btn handled in toggles block below
+
+// ── Quote management ──
+let quoteData = [
+  { image: '', quote: 'The amount of AI we use here is honestly fun. You can just try things, test tools, see what works.', name: 'Anthony Kelley', title: 'Core Infrastructure Leader' }
+];
+
+function renderQuoteForms() {
+  const list = document.getElementById('quotesFormList');
+  list.innerHTML = '';
+  quoteData.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'card-group';
+    card.style.position = 'relative';
+    card.innerHTML = `
+      <div class="card-group-title">Quote ${i+1} ${quoteData.length > 1 ? `<span data-remove="${i}" style="float:right;color:var(--poppy);cursor:pointer;font-size:11px;">Remove</span>` : ''}</div>
+      <div class="field">
+        <label>Photo</label>
+        <input type="file" accept="image/*" data-qi="${i}" data-type="image" style="width:100%;font-size:11px;color:#888">
+        ${q.image ? `<img src="${q.image}" style="margin-top:6px;width:48px;height:48px;border-radius:50%;object-fit:cover;border:1px solid var(--border)">` : ''}
+      </div>
+      <div class="field"><label>Quote text</label><textarea data-qi="${i}" data-type="quote" style="min-height:72px">${q.quote}</textarea></div>
+      <div class="field-row">
+        <div class="field"><label>Name</label><input type="text" data-qi="${i}" data-type="name" value="${q.name}"></div>
+        <div class="field"><label>Title</label><input type="text" data-qi="${i}" data-type="title" value="${q.title}"></div>
+      </div>`;
+    list.appendChild(card);
+  });
+
+  // Remove buttons
+  list.querySelectorAll('[data-remove]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      quoteData.splice(parseInt(btn.dataset.remove), 1);
+      renderQuoteForms();
+      updatePreview();
+    });
+  });
+
+  // Text/input changes
+  list.querySelectorAll('[data-qi]').forEach(el => {
+    if (el.type === 'file') {
+      el.addEventListener('change', function() {
+        const i = parseInt(this.dataset.qi);
+        const file = this.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+          quoteData[i].image = e.target.result;
+          renderQuoteForms();
+          updatePreview();
+        };
+        reader.readAsDataURL(file);
+      });
+    } else {
+      el.addEventListener('input', function() {
+        quoteData[parseInt(this.dataset.qi)][this.dataset.type] = this.value;
+        updatePreview();
+      });
+    }
+  });
+}
+
+document.getElementById('addQuoteBtn').addEventListener('click', () => {
+  quoteData.push({ image: '', quote: '', name: '', title: '' });
+  renderQuoteForms();
+  updatePreview();
+});
+
+renderQuoteForms();
+
+// ── JD Fetch & Parse buttons ──
+const status = document.getElementById('parseStatus');
+
+document.getElementById('fetchBtn').addEventListener('click', async () => {
+  const url = document.getElementById('jdUrl').value.trim();
+  if (!url) return;
+  status.style.color = '#888';
+  status.textContent = 'Fetching…';
+
+  try {
+    let plain = '';
+
+    if (!isLocal) {
+      // ── On Vercel: fetch server-side (no CORS issues) ──
+      const resp = await fetch('/api/parse', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'fetch', url })
+      });
+      const data = await resp.json();
+      if (data.error) throw new Error(data.error);
+      plain = data.text;
+    } else {
+      // ── Local: try CORS proxies ──
+      const proxies = [
+        u => `https://api.allorigins.win/get?url=${encodeURIComponent(u)}`,
+        u => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(u)}`,
+      ];
+      for (const makeProxy of proxies) {
+        try {
+          const r = await fetch(makeProxy(url), { signal: AbortSignal.timeout(8000) });
+          const ct = r.headers.get('content-type') || '';
+          let html = ct.includes('json') ? (await r.json()).contents || '' : await r.text();
+          if (!html || html.length < 100) continue;
+          const div = document.createElement('div');
+          div.innerHTML = html;
+          div.querySelectorAll('script,style,nav,footer,header').forEach(el => el.remove());
+          plain = (div.innerText || div.textContent || '').trim();
+          if (plain.length > 100) break;
+        } catch(e) { continue; }
+      }
+    }
+
+    if (plain.length > 100) {
+      document.getElementById('jdText').value = plain;
+      status.style.color = '#2e7d32';
+      status.textContent = '✓ Fetched — click "Parse & autofill" to fill the form';
+    } else {
+      throw new Error('Could not extract text from that page');
+    }
+  } catch(e) {
+    status.style.color = 'var(--poppy)';
+    status.textContent = 'Could not fetch — paste the JD text manually instead';
+  }
+});
+
+// ── UTM link generator ──
+function buildUtmUrl(base, source, medium, campaign) {
+  const url = new URL(base);
+  url.searchParams.set('utm_source', source);
+  url.searchParams.set('utm_medium', medium);
+  url.searchParams.set('utm_campaign', campaign);
+  return url.toString();
+}
+
+function renderUtmLinks() {
+  const base = document.getElementById('pageUrl').value.trim();
+  const box = document.getElementById('utmLinks');
+  const list = document.getElementById('utmLinkList');
+  if (!base || !base.startsWith('http')) { box.style.display = 'none'; return; }
+
+  const jobTitle = document.getElementById('jobTitle').value || 'role';
+  const campaign = jobTitle.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').slice(0, 40);
+
+  const channels = [
+    { label: 'LinkedIn post', source: 'linkedin', medium: 'social', icon: '🔗' },
+    { label: 'Email campaign', source: 'email', medium: 'email', icon: '📧' },
+    { label: 'Slack / internal', source: 'slack', medium: 'internal', icon: '💬' },
+    { label: 'Job board', source: 'job-board', medium: 'referral', icon: '📋' },
+  ];
+
+  list.innerHTML = channels.map(ch => {
+    const url = buildUtmUrl(base, ch.source, ch.medium, campaign);
+    return `<div style="display:flex;align-items:center;gap:8px;background:white;border:1px solid var(--border);border-radius:4px;padding:7px 10px;">
+      <span style="font-size:13px;flex-shrink:0">${ch.icon}</span>
+      <span style="font-size:11px;color:#555;font-weight:500;flex-shrink:0;width:110px">${ch.label}</span>
+      <input type="text" value="${url}" readonly style="flex:1;font-size:10px;font-family:'DM Mono',monospace;border:none;background:transparent;color:#888;outline:none;min-width:0">
+      <button onclick="navigator.clipboard.writeText('${url}');this.textContent='✓';setTimeout(()=>this.textContent='Copy',1500)" style="font-size:11px;font-weight:500;color:var(--poppy);background:transparent;border:none;cursor:pointer;flex-shrink:0;white-space:nowrap;">Copy</button>
+    </div>`;
+  }).join('');
+
+  box.style.display = 'block';
+}
+
+document.getElementById('pageUrl').addEventListener('input', renderUtmLinks);
+
+// ── LinkedIn testimonial finder ──
+// Uses Klaviyo's company people page — shows current employees only (best post-admin)
+const KLAVIYO_PEOPLE = 'https://www.linkedin.com/company/klaviyo/people/?keywords=';
+
+function detectRoleFamily(jobTitle) {
+  const t = (jobTitle || '').toLowerCase();
+  if (/engineer|developer|software|backend|frontend|ml|machine learning|ai |data scientist|platform|infrastructure|devops|sre/i.test(t)) return 'engineering';
+  if (/market|brand|content|campaign|demand|growth|seo|social|email|communications|pr |public relation/i.test(t)) return 'marketing';
+  if (/sales|account executive|account manager|revenue|gtm|go-to-market|business development|partnership/i.test(t)) return 'sales';
+  if (/product manager|product lead|pm |program manager|project manager/i.test(t)) return 'product';
+  if (/design|ux|ui |creative|visual|graphic/i.test(t)) return 'design';
+  if (/people|talent|recruiter|hr |human resources|culture|employee experience|employer brand/i.test(t)) return 'people';
+  if (/customer success|customer support|customer experience|implementation|solutions engineer/i.test(t)) return 'cs';
+  if (/finance|accounting|legal|operations|strategy|analytics|data analyst/i.test(t)) return 'ops';
+  return 'general';
+}
+
+function getSearchKeyword(jobTitle, family) {
+  // Use the actual job title words as the search, stripped of company/team suffixes
+  const clean = jobTitle.replace(/[-–|·]/g, ' ').replace(/\s+/g, ' ').trim();
+  // Take first 4 words max for a clean search
+  const words = clean.split(' ').slice(0, 4).join(' ');
+  return words || family;
+}
+
+function showLinkedInFinder(jobTitle) {
+  if (!jobTitle) return;
+  const box = document.getElementById('liFinderBox');
+  const container = document.getElementById('liSearchLinks');
+  const family = detectRoleFamily(jobTitle);
+  const keyword = getSearchKeyword(jobTitle, family);
+  const url = KLAVIYO_PEOPLE + encodeURIComponent(keyword);
+
+  container.innerHTML = `
+    <a href="${url}" target="_blank" rel="noopener"
+      style="display:flex;align-items:center;gap:10px;background:white;border:1px solid #c2d8f5;border-radius:4px;padding:10px 14px;font-size:13px;font-weight:500;color:#2d6bc4;text-decoration:none;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="#0a66c2"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+      Find current Klaviyo "${keyword}" employees →
+    </a>`;
+
+  box.style.display = 'block';
+}
+
+// ── Apply Klaviyo Degular to all inline DM Mono headings in the form ──
+document.querySelectorAll('.form-panel [style]').forEach(el => {
+  if (el.style.fontFamily && el.style.fontFamily.includes('DM Mono')) {
+    el.style.fontFamily = "'Klaviyo Degular', 'DM Mono', monospace";
+    el.style.letterSpacing = '-.01em';
+    el.style.fontSize = '16px';
+  }
+});
+
+// ── Persona presets ──
+const PERSONA_PRESETS = {
+  engineering: `Engineers at Klaviyo are motivated by: technical scale (196K+ customers, 7.3B profiles, 1.6B API calls/day), working on agentic AI that runs autonomously, peer quality and high talent density, ownership without bureaucracy, learning velocity in a rapidly evolving field. They're skeptical of corporate speak — they want honesty about challenges, not a glossy pitch. Red flags for them: slow teams, unclear technical direction, no real ownership. Key motivators: build at real scale, shape architecture, work on hard problems that matter to real businesses. Tone: direct, technically specific, honest. Avoid: "passionate", "dynamic", "we're a family", vague claims about "cutting-edge tech".`,
+
+  marketing: `Marketers at Klaviyo are motivated by: brand impact at scale (powering 196K+ of the world's top brands), creative autonomy, data-backed decision making, fast feedback loops, cross-functional influence with product and engineering. They care about: doing the best work of their career, building campaigns they're proud of, being at a company where marketing is taken seriously, owning initiatives end-to-end. Red flags: micromanagement, no access to data, siloed teams, being an afterthought to product. Key motivators: lead real initiatives, see measurable impact, grow skills fast. Tone: ambitious but grounded, results-focused, authentic.`,
+
+  sales: `Sales candidates at Klaviyo are motivated by: strong product-market fit (easier to sell when the product genuinely delivers), clear territory ownership, competitive comp with real upside, meaningful customer relationships, a clear path to career growth. They care about: quota attainability, team culture, quality of leads and pipeline support, product roadmap credibility. Red flags: unclear comp structure, micromanagement, no promotion path, a product that's hard to believe in. Key motivators: close deals that matter, build lasting customer relationships, grow into leadership. Tone: direct, comp-transparent, growth-forward.`,
+
+  product: `Product managers at Klaviyo are motivated by: shipping things that tangibly improve outcomes for 196K+ real businesses, access to rich data to make real decisions, proximity to customers, genuine cross-functional influence over engineering and design. They care about: autonomy over roadmap priorities, being close to customers, working with strong engineers who respect good product thinking, seeing their work used and loved. Red flags: too many approval layers, no data access, endless roadmap debates that go nowhere. Key motivators: own a product area end-to-end, drive real customer outcomes, move fast. Tone: customer-first, outcome-driven, pragmatic.`,
+
+  people: `People and talent professionals at Klaviyo are motivated by: building a genuinely high-performing team, being a strategic partner at the leadership table (not just HR admin), working in a culture that lives up to its values, and doing employer brand and talent work they're proud of. They care about: strategic influence, candidate and employee experience, DEI with real accountability, and being trusted to shape culture. Red flags: reactive HR, being excluded from business decisions, culture that's just a slide deck. Key motivators: make a real impact on how the company grows, be trusted by leadership, work alongside people who take people strategy seriously. Tone: people-first, strategic, authentic.`
+};
+
+document.getElementById('personaPresets').addEventListener('click', function(e) {
+  const btn = e.target.closest('[data-preset]');
+  if (!btn) return;
+  const preset = PERSONA_PRESETS[btn.dataset.preset];
+  if (preset) {
+    document.getElementById('personaText').value = preset;
+    document.getElementById('personaText').classList.add('reviewed');
+    // Highlight active preset
+    document.querySelectorAll('[data-preset]').forEach(b => {
+      b.style.background = 'white';
+      b.style.borderColor = 'var(--border)';
+      b.style.color = '#555';
+    });
+    btn.style.background = 'var(--charcoal)';
+    btn.style.borderColor = 'var(--charcoal)';
+    btn.style.color = 'white';
+  }
+});
+
+// ── Demo mode ──
+const DEMO_DATA = {
+  jobTitle: 'Senior AI Engineer', team: 'Engineering', location: 'Boston, MA',
+  salaryMin: '$148,000', salaryMax: '$222,000',
+  heroHeadline: 'Build the AI that runs itself.', heroPoppy: 'runs itself.',
+  heroSub: "You'll build the backend systems that make Klaviyo's AI agents act autonomously — at a scale most engineers never get close to. The training data, the infrastructure, and the mandate are already here.",
+  pill1: '$148K – $222K base', pill2: 'Backend-heavy · AI/ML',
+  ticker1: '196K+ customers worldwide', ticker2: '7.3B customer profiles', ticker3: '1.6B avg API calls daily', ticker4: 'Agentic AI at scale',
+  building: `Backend systems that power agentic AI products at scale
+Data pipelines that feed ML models the right training signal
+Model-serving infrastructure that makes AI reliable in production
+The scaffolding for Klaviyo's agentic architecture
+Influencing architecture decisions on AWS and Kubernetes`,
+  time: `Designing async processing pipelines and distributed systems
+Building and shipping generative AI applications into production
+Creating evals that tell you when your AI is actually working
+Collaborating directly with PMs, ML engineers, and data scientists`,
+  techTags: 'Python, FastAPI, Django, Apache Spark, Kafka, Celery, Redis, SQLAlchemy, AWS, Kubernetes, Generative AI, Agentic AI',
+  techHighlight: 'Python, FastAPI, Django, Generative AI, Agentic AI',
+  required: `5+ years backend engineering with production ownership\nHands-on production experience with generative AI or agentic AI\nProficient in Python — FastAPI or Django preferred\nExperience building human and automated evals for AI model quality\nDeep async processing: Kafka, Celery, SQS, Redis\nCloud-native on AWS with Kubernetes and CI/CD\nHigh autonomy — you handle ambiguity and move fast`,
+  niceToHave: `Experience training and deploying ML models in production\nBackground in reinforcement learning\nComfortable collaborating directly with PMs and customers`,
+  softSkills: 'Ownership, High autonomy, Curiosity, Systems thinking, Ambiguity tolerance',
+  whyTitle: 'Agentic AI and automation, at scale, for 196K+ businesses.', whyTitlePoppy: 'at scale,',
+  why1Title: 'Training data no one else has', why1Desc: 'Billions of consumer profiles. Hundreds of billions of customer messages and the conversion data that follows. Your models learn from real outcomes at a scale most AI engineers never get close to.', why1Link1: '196K+ customers', why1Link2: 'Production AI',
+  why2Title: 'Leveled on scope, not AI years', why2Desc: 'We look at production ownership, system complexity, and what you\'ve built that actually ran. Direct AI experience matters — it\'s not the only thing.', why2Link1: 'Scope-based', why2Link2: 'AI system design',
+  why3Title: 'Software that runs itself', why3Desc: 'We\'re building toward AI that optimizes itself based on outcomes. You\'ll help build the infrastructure that makes Klaviyo\'s agents run without someone watching them.', why3Link1: 'Agentic arch', why3Link2: 'Multiple orgs',
+  why4Title: 'Impact at real scale', why4Desc: '196K+ customers means every backend decision has a real blast radius. The infrastructure you build here touches more businesses than most engineers reach in a full career.', why4Link1: 'Real brands', why4Link2: '350+ integrations',
+  ctaTitle: "You got what it takes. We got the scale.", ctaSub: 'Join the team building agentic systems at scale — with people who are just as ambitious as you, and who don\'t do "good enough."'
+};
+
+document.getElementById('demoBtn').addEventListener('click', function() {
+  Object.entries(DEMO_DATA).forEach(([key, val]) => {
+    const el = document.getElementById(key);
+    if (el) { el.value = val; el.classList.add('reviewed'); }
+  });
+  // Load engineering preset
+  document.getElementById('personaText').value = PERSONA_PRESETS.engineering;
+  document.querySelectorAll('[data-preset]').forEach(b => {
+    b.style.background = b.dataset.preset === 'engineering' ? 'var(--charcoal)' : 'white';
+    b.style.borderColor = b.dataset.preset === 'engineering' ? 'var(--charcoal)' : 'var(--border)';
+    b.style.color = b.dataset.preset === 'engineering' ? 'white' : '#555';
+  });
+  this.textContent = '✓ Demo loaded!';
+  this.style.background = 'rgba(46,125,50,0.3)';
+  this.style.color = '#a5d6a7';
+  setTimeout(() => { this.textContent = '⚡ Load demo'; this.style.background = 'rgba(255,255,255,0.1)'; this.style.color = 'rgba(255,255,255,0.7)'; }, 2000);
+  updatePreview();
+  showLinkedInFinder('Senior AI Engineer');
+});
+
+// ── Mobile preview toggle ──
+function setPreviewWidth(w) {
+  const iframe = document.getElementById('preview');
+  const desktop = document.getElementById('viewDesktop');
+  const mobile = document.getElementById('viewMobile');
+  iframe.style.width = w;
+  iframe.style.maxWidth = w;
+  desktop.style.background = w === '100%' ? 'var(--poppy)' : 'rgba(255,255,255,0.1)';
+  desktop.style.color = w === '100%' ? 'white' : 'rgba(255,255,255,0.6)';
+  desktop.style.border = w === '100%' ? 'none' : '1px solid rgba(255,255,255,0.15)';
+  mobile.style.background = w !== '100%' ? 'var(--poppy)' : 'rgba(255,255,255,0.1)';
+  mobile.style.color = w !== '100%' ? 'white' : 'rgba(255,255,255,0.6)';
+  mobile.style.border = w !== '100%' ? 'none' : '1px solid rgba(255,255,255,0.15)';
+}
+
+// ── DM outreach template ──
+document.getElementById('dmCopyBtn').addEventListener('click', function() {
+  const jobTitle = document.getElementById('jobTitle').value || 'this role';
+  const team = document.getElementById('team').value || 'your team';
+  const template = `Hi [Name] — I'm working on a recruiting landing page for our ${jobTitle} opening on the ${team} team. I'd love to include a real voice from someone doing the work. Would you be open to sharing one or two sentences about what you enjoy most about your role here? Totally low-lift — I can send a few questions or you can just write whatever feels natural. Thanks so much!`;
+  navigator.clipboard.writeText(template).then(() => {
+    this.textContent = '✓ Copied to clipboard!';
+    this.style.background = '#e8f5e9';
+    this.style.color = '#2e7d32';
+    document.getElementById('dmStatus').textContent = 'Paste directly into LinkedIn DM';
+    setTimeout(() => { this.textContent = '📋 Copy outreach DM template'; this.style.background = 'white'; this.style.color = '#2d6bc4'; document.getElementById('dmStatus').textContent = ''; }, 3000);
+  });
+});
+
+// ── Session memory ──
+const SESSION_KEY = 'klaviyo_gen_session';
+const SESSION_FIELDS = ['jobTitle','team','location','salaryMin','salaryMax','heroHeadline','heroPoppy','heroSub','pill1','pill2','pill3','pill4','ticker1','ticker2','ticker3','ticker4','building','time','techTags','techHighlight','softSkills','required','niceToHave','whyTitle','whyTitlePoppy','why1Title','why1Desc','why1Link1','why1Link2','why2Title','why2Desc','why2Link1','why2Link2','why3Title','why3Desc','why3Link1','why3Link2','why4Title','why4Desc','why4Link1','why4Link2','cult1Title','cult1Quote','cult1Highlight','cult2Title','cult2Quote','cult2Highlight','cult3Title','cult3Quote','cult3Highlight','cult4Title','cult4Quote','cult4Highlight','ctaTitle','ctaSub','personaText'];
+
+function saveSession() {
+  const data = {};
+  SESSION_FIELDS.forEach(id => { const el = document.getElementById(id); if (el) data[id] = el.value; });
+  try { localStorage.setItem(SESSION_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+function restoreSession() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    SESSION_FIELDS.forEach(id => {
+      if (data[id] !== undefined) {
+        const el = document.getElementById(id);
+        if (el) { el.value = data[id]; if (data[id]) el.classList.add('reviewed'); }
+      }
+    });
+  } catch(e) {}
+}
+
+// Auto-save on any input
+document.addEventListener('input', function(e) {
+  if (e.target.closest('.form-panel')) saveSession();
+}, true);
+
+// Restore on load
+restoreSession();
+
+// ── Completeness score ──
+const SCORE_FIELDS = ['jobTitle','location','heroHeadline','heroSub','pill1','building','time','required','techTags','whyTitle','why1Title','why2Title','cult1Title','cult2Title','ctaTitle','ctaSub'];
+const SCORE_LABELS = {'jobTitle':'Job title','location':'Location','heroHeadline':'Hero headline','heroSub':'Hero subtitle','pill1':'Pill 1','building':'What you\'re building','time':'How you\'ll spend time','required':'Qualifications','techTags':'Tech skills','whyTitle':'Why Klaviyo title','why1Title':'Why Klaviyo card 1','why2Title':'Why Klaviyo card 2','cult1Title':'Culture card 1','cult2Title':'Culture card 2','ctaTitle':'CTA title','ctaSub':'CTA subtitle'};
+
+function showCompletenessScore(filledCount, totalAttempted) {
+  const score = SCORE_FIELDS.filter(id => { const el = document.getElementById(id); return el && el.value.trim(); }).length;
+  const total = SCORE_FIELDS.length;
+  const missing = SCORE_FIELDS.filter(id => { const el = document.getElementById(id); return el && !el.value.trim(); }).map(id => SCORE_LABELS[id]).filter(Boolean);
+  const pct = Math.round(score/total*100);
+  const color = pct >= 80 ? '#2e7d32' : pct >= 50 ? '#e65100' : '#c62828';
+  const status = document.getElementById('parseStatus');
+  status.innerHTML = `<span style="color:${color};font-weight:600">${pct}% complete</span> · ${score}/${total} key fields filled${missing.length ? ` · Still empty: <span style="color:#888">${missing.slice(0,3).join(', ')}${missing.length>3?' +'+( missing.length-3)+' more':''}</span>` : ' ✓'}`;
+}
+
+// ── Persona file reader (.txt, .md, .doc, .docx) ──
+document.getElementById('personaFile').addEventListener('change', async function() {
+  const file = this.files[0];
+  if (!file) return;
+  const pStatus = document.getElementById('personaStatus');
+  pStatus.textContent = 'Reading file…';
+  const ext = file.name.split('.').pop().toLowerCase();
+
+  try {
+    if (ext === 'docx') {
+      const arrayBuffer = await file.arrayBuffer();
+      const result = await mammoth.extractRawText({ arrayBuffer });
+      document.getElementById('personaText').value = result.value;
+    } else if (ext === 'doc') {
+      // .doc is binary — extract readable strings as best-effort
+      const arrayBuffer = await file.arrayBuffer();
+      const bytes = new Uint8Array(arrayBuffer);
+      let text = '';
+      for (let i = 0; i < bytes.length - 1; i++) {
+        if (bytes[i] >= 32 && bytes[i] < 127) text += String.fromCharCode(bytes[i]);
+        else if (bytes[i] === 0 && text.length > 0 && text[text.length-1] !== ' ') text += ' ';
+      }
+      // Clean up noise
+      text = text.replace(/\s+/g, ' ').replace(/[^\x20-\x7E\n]/g, '').trim();
+      document.getElementById('personaText').value = text.slice(0, 8000);
+    } else {
+      // .txt / .md — plain text
+      const reader = new FileReader();
+      reader.onload = e => { document.getElementById('personaText').value = e.target.result; };
+      reader.readAsText(file);
+    }
+    pStatus.textContent = `✓ Loaded: ${file.name}`;
+    pStatus.style.color = '#2e7d32';
+  } catch(e) {
+    pStatus.textContent = `Could not read file — paste the text manually`;
+    pStatus.style.color = 'var(--poppy)';
+  }
+});
+
+// ── Dev mode: show key field when running locally ──
+const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost';
+if (isLocal) {
+  document.getElementById('devKeyField').style.display = 'block';
+  const keyInput = document.getElementById('openaiKey');
+  const saved = localStorage.getItem('groq_key');
+  if (saved) keyInput.value = saved;
+  keyInput.addEventListener('input', () => localStorage.setItem('groq_key', keyInput.value.trim()));
+}
+
+// ── EB-focused system prompt ──
+const EB_SYSTEM_PROMPT = `You are a senior employer branding specialist at Klaviyo with deep knowledge of the company, its engineering culture, and how to write candidate-centric job content that converts. You think like both a recruiter and a marketer.
+
+## About Klaviyo (always relevant context)
+- 196K+ customers worldwide, 7.3B customer profiles, 1.6B avg API calls daily
+- Building the autonomous B2C CRM — AI-powered marketing and service platform
+- Culture: high ownership, high autonomy, builders not passengers, direct feedback
+- Mission: empower creators to own their destiny through first-party data
+- Boston, MA HQ; hybrid work model
+- Serves brands across retail, ecommerce, restaurants, wellness, and enterprise
+- Known for being the B2C alternative to Salesforce — fast-moving, product-led
+
+## Role type awareness
+Read the JD carefully to determine the role type and adjust your copy accordingly:
+- **Engineering roles**: emphasize scale, system complexity, AI/infrastructure impact
+- **Marketing roles**: emphasize brand, audience, creative influence, campaign ownership, pipeline/revenue impact
+- **Product roles**: emphasize customer outcomes, roadmap ownership, cross-functional influence
+- **Sales/GTM roles**: emphasize territory ownership, customer relationships, revenue impact
+- **People/HR roles**: emphasize candidate/employee experience, culture, organizational impact
+Match the tone and vocabulary to what this type of candidate actually cares about.
+
+## Your job
+Transform a raw job description into compelling, candidate-first copy. Write as if you're talking directly to the best person for this role — someone ambitious, curious, and skeptical of corporate speak.
+
+## SOURCING RULES — follow exactly
+- **JD only** (never invent, never rewrite beyond voice): building, time, required, niceToHave, techTags, jobTitle, location, salary
+- **JD + persona context combined**: heroHeadline, heroPoppy, heroSub, pill1, pill2, whyTitle, why1-4 cards, ctaTitle, ctaSub, ticker phrases
+- **Klaviyo knowledge + persona context** (not from JD): softSkills
+- **NEVER touch**: cult1-4 (built different section — leave empty strings)
+
+## Field-by-field rules
+
+**jobTitle**: Extract exactly as written.
+
+**location**: City, state. Add "Hybrid" if mentioned.
+
+**salaryMin / salaryMax**: Extract with $ sign. Format: "$148,000". If not listed, leave empty.
+
+**heroHeadline** (most important field): 6–10 words. Candidate-facing. Action-oriented. Specific to this role. Must make the right person lean forward.
+  - Engineering: "Build the AI that runs itself." / "Own the systems powering 196K+ businesses."
+  - Marketing: "Shape how the world's best brands grow." / "Write the campaigns that move the market."
+  - Product: "Define what comes next for 196K+ businesses." / "Own the roadmap. Ship what matters."
+  - Sales: "Close deals that change how brands think about data."
+  - People/EB: "Build the team that builds the future."
+  - Bad (all roles): "Join our team" / "Exciting opportunity" / "[Job title] at Klaviyo"
+  - Read the role and write a headline a great candidate would screenshot and send to a friend.
+
+**heroPoppy**: 3–5 words from the headline that capture the most exciting idea. This appears in brand red italic. Pick the phrase that would make someone stop scrolling.
+
+**heroSub**: 2 sentences MAX. First sentence: what this person will actually DO (specific, concrete). Second sentence: why it matters at scale or what makes it unique here. Start with "You'll" or "Here" or a strong verb. Never start with "We". Under 220 characters total.
+  - Good: "You'll build the backend systems that make Klaviyo's AI agents act autonomously — at a scale most engineers never get close to. The training data, the infrastructure, and the mandate are already here."
+  - Bad: "We are looking for a talented engineer who will join our team and help us build great products."
+
+**pill1**: Salary range formatted as "$148K – $222K base". If no salary, use the role type like "Backend-heavy · AI/ML".
+
+**pill2**: 2–4 word descriptor of the role. Examples: "Backend-heavy · AI/ML", "Hybrid · Product Marketing", "Remote · Senior Level".
+
+**building** (What you're actually doing / owning): ⚠️ SOURCE FROM JD ONLY. Extract the key responsibilities from the JD and rewrite each as a candidate-facing bullet starting with a strong action verb. Do not invent responsibilities not in the JD. 4-6 bullets, one idea each, under 110 chars.
+
+**time** (How you'll spend your time): 4–5 practical day-to-day bullets. Different from building — more process/collaboration focused. Honest and specific. Include who they work with, what tools, what decisions they influence.
+
+**required**: ⚠️ VERBATIM FROM JD ONLY. Copy every required qualification exactly as written. Do NOT rewrite, summarize, combine, or improve. If the JD lists 8 bullets, return all 8. If it lists 12, return all 12. Remove only bullet symbols — keep all words. One per line.
+
+**niceToHave**: ⚠️ VERBATIM FROM JD ONLY. Same rule — copy every preferred/bonus qualification exactly as listed. No rewrites. One per line.
+
+**techTags**: Hard skills only — comma-separated. Tools, languages, frameworks, platforms. No soft skills. Extract from the full JD text.
+
+**softSkills**: Traits and working style only — comma-separated. Things like: Ownership, High autonomy, Curiosity, Systems thinking, Ambiguity tolerance. Capitalize each.
+
+## Critical rules
+- Never use: "we are looking for", "join our team", "exciting opportunity", "passionate", "dynamic", "leverage", "synergy", "robust"
+- Never start bullets with "You will be responsible for"
+- Always write for the CANDIDATE, not the company
+- If salary is missing, do NOT invent numbers
+- building and time fields: newline-separated plain text, no bullet symbols or dashes
+
+**whyTitle**: A punchy 8-12 word section headline for "Why Klaviyo". Should speak to what makes THIS role/team exciting at Klaviyo. Not generic.
+**whyTitlePoppy**: 3-5 words from whyTitle to highlight in brand red.
+**why1Title through why4Title**: 4 card titles (5-8 words) for why work here, tailored to this candidate type using JD + persona context. Cover: data/scale, culture/ownership, growth, impact.
+**why1Desc through why4Desc**: 2-3 sentences per card. Specific to Klaviyo + this role. Use stats where relevant (196K+ customers, 7.3B profiles, etc.).
+**why1Link1, why1Link2** (and same for 2-4): Snappy 1-3 word selling points per card. e.g. "196K+ customers", "Agentic AI", "High ownership", "Boston HQ". OPTIONAL — leave empty string if nothing compelling fits.
+**cult1Title through cult4Title**: 4 culture card headlines from Klaviyo's actual culture. Examples: "People who run toward change." / "High agency is expected." / "Ownership means end-to-end responsibility." / "This is for builders, not passengers." Adapt slightly to the role type if relevant.
+**cult1Quote through cult4Quote**: 1-2 sentence quotes that sound like real employees. Honest, specific, not corporate. First person.
+**cult1Highlight through cult4Highlight**: The most powerful 4-8 words from each quote to highlight in Poppy color.
+**ticker1 through ticker4**: 4 short ticker phrases (3-6 words). Mix company stats and role-specific highlights. Examples: "196K+ customers worldwide" / "7.3B customer profiles" / "Agentic AI at scale"
+**ctaTitle**: 6-10 word CTA headline. Candidate-first. Punchy. e.g. "You got what it takes. We got the scale."
+**ctaSub**: 1-2 sentence CTA subtext. What makes this team/role worth joining. Speak to ambition.
+
+Return ONLY a valid JSON object with ALL of these exact keys:
+{
+  "jobTitle": "", "location": "", "salaryMin": "", "salaryMax": "",
+  "heroHeadline": "", "heroPoppy": "", "heroSub": "",
+  "pill1": "", "pill2": "",
+  "building": "", "time": "",
+  "required": "", "niceToHave": "",
+  "techTags": "", "softSkills": "",
+  "whyTitle": "", "whyTitlePoppy": "",
+  "why1Title": "", "why1Desc": "", "why1Link1": "", "why1Link2": "",
+  "why2Title": "", "why2Desc": "", "why2Link1": "", "why2Link2": "",
+  "why3Title": "", "why3Desc": "", "why3Link1": "", "why3Link2": "",
+  "why4Title": "", "why4Desc": "", "why4Link1": "", "why4Link2": "",
+  "cult1Title": "", "cult1Quote": "", "cult1Highlight": "",
+  "cult2Title": "", "cult2Quote": "", "cult2Highlight": "",
+  "cult3Title": "", "cult3Quote": "", "cult3Highlight": "",
+  "cult4Title": "", "cult4Quote": "", "cult4Highlight": "",
+  "ticker1": "", "ticker2": "", "ticker3": "", "ticker4": "",
+  "ctaTitle": "", "ctaSub": ""
+}`;
+
+async function parseWithAI(text, apiKey, personaContext = '') {
+  const personaSection = personaContext
+    ? `\n\n## CANDIDATE PERSONA CONTEXT (use this to shape Why Klaviyo cards, CTA, hero subtitle)\n${personaContext}\n\nApply this persona context specifically to: heroSub, the tone of building/time bullets, and especially the Why Klaviyo cards and CTA fields. What does THIS type of candidate care about? What makes them lean in? Use their language and motivations.`
+    : '';
+
+  // Groq — OpenAI-compatible, free, uses Llama 3.3 70B
+  const resp = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model: 'llama-3.3-70b-versatile',
+      messages: [
+        { role: 'system', content: EB_SYSTEM_PROMPT + personaSection },
+        { role: 'user', content: `Parse this job description and return ONLY valid JSON with the specified keys:\n\n${text.slice(0, 12000)}` }
+      ],
+      temperature: 0.3,
+      response_format: { type: 'json_object' }
+    })
+  });
+  if (!resp.ok) {
+    const err = await resp.json();
+    throw new Error(err.error?.message || 'Groq API error — check your key');
+  }
+  const data = await resp.json();
+  const raw = data.choices?.[0]?.message?.content;
+  if (!raw) throw new Error('Empty response from Groq');
+  const cleaned = raw.replace(/^```json\s*/,'').replace(/\s*```$/,'').trim();
+  return JSON.parse(cleaned);
+}
+
+document.getElementById('parseBtn').addEventListener('click', async () => {
+  const text = document.getElementById('jdText').value.trim();
+  if (!text) { status.textContent = 'Paste some JD text first'; return; }
+
+  status.style.color = '#888';
+  status.textContent = '⏳ Thinking like a recruiter…';
+
+  const personaContext = (document.getElementById('personaText')?.value || '').trim();
+
+  try {
+    let filled;
+
+    if (isLocal) {
+      // ── Local testing: call Groq directly with key from localStorage ──
+      const localKey = (document.getElementById('openaiKey')?.value || '').trim();
+      if (!localKey) throw new Error('Paste your Groq key into the dev field above to test locally');
+      filled = await parseWithAI(text, localKey, personaContext);
+    } else {
+      // ── Production: call server-side Vercel function (key hidden) ──
+      const resp = await fetch('/api/parse', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, personaContext })
+      });
+      if (!resp.ok) {
+        const err = await resp.json();
+        throw new Error(err.error || 'Server error');
+      }
+      filled = await resp.json();
+    }
+    const count = applyParsed(filled);
+    showCompletenessScore();
+    showLinkedInFinder(filled.jobTitle || document.getElementById('jobTitle').value);
+    updatePreview();
+
+  } catch(e) {
+    // Fall back to regex if server unavailable (e.g. local dev)
+    status.style.color = '#888';
+    status.textContent = 'AI unavailable — using smart fallback…';
+    const filled = parseJD(text);
+    const count = applyParsed(filled);
+    status.style.color = count > 0 ? '#2e7d32' : 'var(--poppy)';
+    status.textContent = count > 0
+      ? `✓ Filled ${count} fields via fallback`
+      : 'Could not extract — try pasting cleaner text';
+    updatePreview();
+  }
+});
+
+// ── Section toggles (skip basic + hero — they're required) ──
+const REQUIRED_SECTIONS = new Set(['basic', 'hero']);
+const sectionVisible = {};
+
+document.querySelectorAll('.form-section-label[data-section]').forEach(label => {
+  const key = label.dataset.section;
+  sectionVisible[key] = true;
+
+  // Skip toggles for required sections
+  if (REQUIRED_SECTIONS.has(key)) return;
+
+  // Inject toggle into label
+  const toggleHTML = `<label class="section-toggle" onclick="event.stopPropagation()">
+    <span class="toggle-switch">
+      <input type="checkbox" checked data-key="${key}">
+      <span class="toggle-slider"></span>
+    </span>
+    <span>Show</span>
+  </label>`;
+  label.insertAdjacentHTML('beforeend', toggleHTML);
+
+  // Collect sibling elements until next section label
+  const siblings = [];
+  let el = label.nextElementSibling;
+  while (el && !el.classList.contains('form-section-label')) {
+    siblings.push(el);
+    el = el.nextElementSibling;
+  }
+
+  label.querySelector('input[type=checkbox]').addEventListener('change', function() {
+    const on = this.checked;
+    sectionVisible[key] = on;
+    label.querySelector('span:last-child').textContent = on ? 'Show' : 'Hide';
+    siblings.forEach(s => s.classList.toggle('section-hidden', !on));
+    updatePreview();
+  });
+});
+
+// Wrap generatePage to respect section toggles
+const _gen = generatePage;
+function generatePageFiltered(d) {
+  let html = _gen(d);
+  // If a section is hidden, strip it from output by replacing with empty string
+  const stripMap = {
+    ticker: /<!-- TICKER[\s\S]*?-->/,
+    why: null,   // handled via conditional in generatePage
+    role: null,
+    stack: null,
+    quals: null,
+    cult: null,
+    cta: null,
+  };
+  return html;
+}
+
+// Override updatePreview to conditionally exclude sections
+function updatePreview() {
+  const d = collectData();
+  d.sections = {...sectionVisible};
+  document.getElementById('preview').srcdoc = generatePage(d);
+}
+
+// Re-wire copy button to respect toggles
+document.getElementById('copyBtn').addEventListener('click', function() {
+  const d = collectData();
+  d.sections = {...sectionVisible};
+  navigator.clipboard.writeText(generatePage(d)).then(() => {
+    this.textContent = 'Copied!';
+    this.classList.add('copied');
+    setTimeout(() => { this.textContent = 'Copy HTML'; this.classList.remove('copied'); }, 2000);
+  });
+});
+
+updatePreview();
+</script>
+</body>
+</html>
