@@ -106,17 +106,17 @@ export default async function handler(req, res) {
   }
 
   try {
+    const personaSection = personaContext
+      ? `\n\n## CANDIDATE PERSONA CONTEXT\n${personaContext}\n\nUse this to shape heroSub, Why Klaviyo cards, and CTA — speak to what THIS type of candidate is motivated by.`
+      : '';
+
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`
       },
-      const personaSection = personaContext
-      ? `\n\n## CANDIDATE PERSONA CONTEXT\n${personaContext}\n\nUse this to shape heroSub, Why Klaviyo cards, and CTA — speak to what THIS type of candidate is motivated by.`
-      : '';
-
-    body: JSON.stringify({
+      body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         messages: [
           { role: 'system', content: EB_SYSTEM_PROMPT + personaSection },
