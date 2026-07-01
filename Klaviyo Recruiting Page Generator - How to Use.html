@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Klaviyo Recruiting Page Generator — How to Use</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Klaviyo Degular';src:url('https://cdn.jsdelivr.net/gh/maasawalker/klaviyo-ai-eng-recruiting-page@main/deploy/assets/fonts/KlaviyoDegular/KlaviyoDegular-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Klaviyo Degular';src:url('https://cdn.jsdelivr.net/gh/maasawalker/klaviyo-ai-eng-recruiting-page@main/deploy/assets/fonts/KlaviyoDegular/KlaviyoDegular-Medium.otf') format('opentype');font-weight:500;font-display:swap}
+@font-face{font-family:'Klaviyo Degular';src:url('https://cdn.jsdelivr.net/gh/maasawalker/klaviyo-ai-eng-recruiting-page@main/deploy/assets/fonts/KlaviyoDegular/KlaviyoDegular-Semibold.otf') format('opentype');font-weight:600;font-display:swap}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--poppy:#FF4B32;--charcoal:#1D1E20;--mist:#F3F2F1;--white:#FFFFFF}
+body{font-family:'Instrument Sans',sans-serif;background:var(--white);color:var(--charcoal);line-height:1.6;-webkit-font-smoothing:antialiased}
+.page{max-width:860px;margin:0 auto;padding:0 40px 80px}
+
+/* Header */
+.header{background:var(--charcoal);margin:0 -40px;padding:36px 40px 32px;margin-bottom:52px}
+.header-logo{height:24px;margin-bottom:20px}
+.header-eyebrow{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--poppy);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px}
+.header-title{font-family:'Klaviyo Degular',sans-serif;font-size:36px;font-weight:400;color:var(--white);line-height:1.1;letter-spacing:-.02em;margin-bottom:10px}
+.header-sub{font-size:16px;color:rgba(255,255,255,.6);max-width:520px;line-height:1.6}
+
+/* What you need box */
+.prereq{background:var(--mist);border-radius:8px;padding:28px 32px;margin-bottom:44px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.prereq-title{font-family:'Klaviyo Degular',sans-serif;font-size:16px;font-weight:500;color:var(--charcoal);margin-bottom:16px;grid-column:1/-1}
+.prereq-item{display:flex;align-items:flex-start;gap:12px}
+.prereq-dot{width:28px;height:28px;background:var(--charcoal);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;color:white;font-weight:600}
+.prereq-text{font-size:14px;color:rgba(29,30,32,.75);line-height:1.5}
+.prereq-text strong{color:var(--charcoal);display:block;font-weight:600;margin-bottom:2px}
+
+/* Steps */
+.steps-title{font-family:'Klaviyo Degular',sans-serif;font-size:22px;font-weight:500;color:var(--charcoal);margin-bottom:28px;padding-bottom:12px;border-bottom:2px solid var(--poppy)}
+.step{display:grid;grid-template-columns:48px 1fr;gap:20px;margin-bottom:32px;align-items:start}
+.step-num{width:48px;height:48px;background:var(--poppy);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Klaviyo Degular',sans-serif;font-size:20px;font-weight:500;color:white;flex-shrink:0}
+.step-content{}
+.step-title{font-family:'Klaviyo Degular',sans-serif;font-size:17px;font-weight:500;color:var(--charcoal);margin-bottom:6px}
+.step-desc{font-size:14px;color:rgba(29,30,32,.72);line-height:1.65;margin-bottom:10px}
+.step-tip{display:flex;gap:8px;background:#fff8f7;border:1px solid #ffd0c8;border-radius:6px;padding:10px 14px;font-size:13px;color:rgba(29,30,32,.7);line-height:1.5}
+.step-tip::before{content:'💡';flex-shrink:0}
+.step-code{font-family:'DM Mono',monospace;font-size:12px;background:var(--mist);padding:3px 8px;border-radius:3px;color:var(--charcoal)}
+
+/* Two column sections */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:44px;margin-bottom:44px}
+.col-card{background:var(--mist);border-radius:8px;padding:24px}
+.col-card-title{font-family:'Klaviyo Degular',sans-serif;font-size:16px;font-weight:500;color:var(--charcoal);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(29,30,32,.1)}
+.col-card ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.col-card ul li{font-size:13px;color:rgba(29,30,32,.72);padding-left:16px;position:relative;line-height:1.5}
+.col-card ul li::before{content:'→';position:absolute;left:0;color:var(--poppy);font-size:12px}
+
+/* Deploy section */
+.deploy{background:var(--charcoal);border-radius:8px;padding:32px;margin-top:44px}
+.deploy-title{font-family:'Klaviyo Degular',sans-serif;font-size:18px;font-weight:500;color:var(--white);margin-bottom:20px}
+.deploy-steps{display:flex;flex-direction:column;gap:12px}
+.deploy-step{display:flex;gap:14px;align-items:flex-start}
+.deploy-num{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--poppy);background:rgba(255,75,50,.15);padding:2px 8px;border-radius:3px;flex-shrink:0;margin-top:2px}
+.deploy-text{font-size:14px;color:rgba(255,255,255,.75);line-height:1.55}
+.deploy-text strong{color:white}
+
+/* Footer */
+.doc-footer{margin-top:52px;padding-top:24px;border-top:1px solid rgba(29,30,32,.1);display:flex;align-items:center;justify-content:space-between}
+.doc-footer-left{font-size:12px;color:#aaa}
+.doc-footer-right{font-family:'DM Mono',monospace;font-size:11px;color:var(--poppy);letter-spacing:.06em;text-transform:uppercase}
+
+@media(max-width:680px){.prereq,.two-col{grid-template-columns:1fr}.page{padding:0 20px 60px}.header{margin:0 -20px;padding:28px 20px 24px}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <img class="header-logo" src="https://cdn.jsdelivr.net/gh/maasawalker/klaviyo-ai-eng-recruiting-page@main/deploy/assets/logos/Klaviyo-Logo-White.svg" alt="Klaviyo">
+    <p class="header-eyebrow">Employer Brand Tool</p>
+    <h1 class="header-title">Custom Landing Page Generator</h1>
+    <p class="header-sub">Turn any job description into a fully branded, candidate-first Klaviyo recruiting page — in under 5 minutes.</p>
+    <a href="https://klaviyo-landing-page-generator.vercel.app/" target="_blank" style="display:inline-flex;align-items:center;gap:8px;margin-top:20px;background:var(--poppy);color:white;font-family:'Instrument Sans',sans-serif;font-size:14px;font-weight:500;padding:10px 22px;border-radius:2px;text-decoration:none;transition:opacity .15s;" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">Open the generator →</a>
+  </div>
+
+  <!-- What you need -->
+  <div class="prereq">
+    <p class="prereq-title">Before you start — what you need</p>
+    <div class="prereq-item">
+      <div class="prereq-dot">1</div>
+      <div class="prereq-text"><strong>The generator URL</strong><a href="https://klaviyo-landing-page-generator.vercel.app/" target="_blank" style="color:var(--poppy);">klaviyo-landing-page-generator.vercel.app</a></div>
+    </div>
+    <div class="prereq-item">
+      <div class="prereq-dot">2</div>
+      <div class="prereq-text"><strong>Your job description</strong>Have the JD URL or text ready. The AI does the heavy lifting.</div>
+    </div>
+    <div class="prereq-item">
+      <div class="prereq-dot">3</div>
+      <div class="prereq-text"><strong>A GitHub account</strong>Free at github.com. You only need this once to deploy your page.</div>
+    </div>
+    <div class="prereq-item">
+      <div class="prereq-dot">4</div>
+      <div class="prereq-text"><strong>A Vercel account</strong>Free at vercel.com. Connect to GitHub and your page goes live instantly.</div>
+    </div>
+  </div>
+
+  <!-- Steps -->
+  <p class="steps-title">How to create your custom landing page</p>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <p class="step-title">Open the generator and load your JD</p>
+      <p class="step-desc">Open the generator URL. In the <strong>Smart JD Importer</strong>, paste your job description URL and click <strong>Fetch</strong> — or paste the JD text directly into the text box.</p>
+      <div class="step-tip">If Fetch doesn't work, open the JD in your browser, press Cmd+A (select all), Cmd+C (copy), and paste the text into the box.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <p class="step-title">Add candidate persona context (optional but recommended)</p>
+      <p class="step-desc">Click a <strong>Quick preset</strong> button that matches your role type — Engineering, Marketing, Sales, Product, or People. This tells the AI what motivates your target candidate, which makes the Why Klaviyo section and CTA significantly more compelling.</p>
+      <div class="step-tip">Have custom EVP notes or persona research? Upload a .txt or .docx file instead, or paste it directly.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <p class="step-title">Click "Parse & autofill form"</p>
+      <p class="step-desc">The AI reads your JD and fills in every section of the form — hero headline, subtitle, role details, qualifications, Why Klaviyo cards, culture cards, ticker phrases, and CTA. Fields turn <span style="background:#fffbdb;border:1px solid #e8c800;padding:1px 6px;border-radius:3px;font-size:12px;">yellow</span> when autofilled. A completeness score shows what's still missing.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <p class="step-title">Review and edit</p>
+      <p class="step-desc">Review yellow-highlighted fields — the AI is good but your judgment is better. Key things to check: hero headline tone, qualifications (should match JD exactly), and Why Klaviyo cards (should speak to this specific candidate type). The live preview on the right updates instantly.</p>
+      <div class="step-tip">Toggle between Desktop and Mobile preview using the buttons above the preview panel to check how it looks on phone.</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-content">
+      <p class="step-title">Add a quote (optional)</p>
+      <p class="step-desc">Scroll to the <strong>Quotes</strong> section. Add a testimonial if you have one handy — if not, no sweat! Click <strong>Find testimonial candidates on LinkedIn</strong> — a pre-filtered search opens showing current Klaviyo employees in the relevant department. Reach out using the <strong>Copy outreach DM</strong> template. Once you have a quote, upload their photo and paste the text.</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">6</div>
+    <div class="step-content">
+      <p class="step-title">Copy the HTML and deploy</p>
+      <p class="step-desc">Click <strong>Copy HTML</strong> in the top right. Then follow the deploy steps below to get your page live with a shareable URL.</p>
+    </div>
+  </div>
+
+  <!-- Tips + Common mistakes -->
+  <div class="two-col">
+    <div class="col-card">
+      <p class="col-card-title">Tips for best results</p>
+      <ul>
+        <li>Always use a persona preset — it dramatically improves the Why Klaviyo and CTA copy</li>
+        <li>Paste the full JD text (including qualifications) for the most complete parse</li>
+        <li>Review the hero headline first — it's the most important field and may need a human touch</li>
+        <li>Add a real employee quote — it's the #1 trust signal for candidates</li>
+        <li>Fill in your live URL in the Analytics & Sharing section to get UTM share links</li>
+      </ul>
+    </div>
+    <div class="col-card">
+      <p class="col-card-title">What the AI fills automatically</p>
+      <ul>
+        <li>Hero headline + subtitle (candidate-facing, action-oriented)</li>
+        <li>Salary pills and role descriptor pills</li>
+        <li>What you're building + how you'll spend your time</li>
+        <li>All required and preferred qualifications (verbatim from JD)</li>
+        <li>Tech skills and soft skills tags</li>
+        <li>Why Klaviyo section (4 cards, tailored to candidate type)</li>
+        <li>Ticker phrases, CTA title and subtitle</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Deploy section -->
+  <div class="deploy">
+    <p class="deploy-title">How to deploy your page live</p>
+    <div class="deploy-steps">
+      <div class="deploy-step">
+        <div class="deploy-num">01</div>
+        <p class="deploy-text">Go to <strong>github.com</strong> → create a free account if you don't have one → create a new public repository (name it anything, e.g. <span style="font-family:'DM Mono',monospace;font-size:12px;color:#ff9a8a">senior-ai-engineer-page</span>)</p>
+      </div>
+      <div class="deploy-step">
+        <div class="deploy-num">02</div>
+        <p class="deploy-text">In the new repo, click <strong>"Add file → Create new file"</strong>. Name it <span style="font-family:'DM Mono',monospace;font-size:12px;color:#ff9a8a">index.html</span>. Paste the copied HTML. Click <strong>Commit changes</strong>.</p>
+      </div>
+      <div class="deploy-step">
+        <div class="deploy-num">03</div>
+        <p class="deploy-text">Go to <strong>vercel.com</strong> → create a free account → click <strong>"Add New Project"</strong> → import your GitHub repo → click <strong>Deploy</strong>. Done. You have a live URL in ~30 seconds.</p>
+      </div>
+      <div class="deploy-step">
+        <div class="deploy-num">04</div>
+        <p class="deploy-text"><strong>To update the page:</strong> go back to the generator, make your edits, copy the new HTML, go to your GitHub repo → click <span style="font-family:'DM Mono',monospace;font-size:12px;color:#ff9a8a">index.html</span> → pencil icon → paste → commit. Vercel auto-redeploys in ~30 seconds.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="doc-footer">
+    <p class="doc-footer-left">Built by the Klaviyo Employer Brand team · Questions? Reach out on Slack</p>
+    <p class="doc-footer-right">Klaviyo Recruiting Tools · 2026</p>
+  </div>
+
+</div>
+</body>
+</html>
