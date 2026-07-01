@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study — Klaviyo Custom Landing Page Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Klaviyo Degular';src:url('https://cdn.jsdelivr.net/gh/maasawalker/klaviyo-ai-eng-recruiting-page@main/deploy/assets/fonts/KlaviyoDegular/KlaviyoDegular-Regular.otf') format('opentype');font-weight:400;font-display:swap}
+@font-face{font-family:'Klaviyo Degular';src:url('https://cdn.jsdelivr.net/gh/maasawalker/klaviyo-ai-eng-recruiting-page@main/deploy/assets/fonts/KlaviyoDegular/KlaviyoDegular-Medium.otf') format('opentype');font-weight:500;font-display:swap}
+@font-face{font-family:'Klaviyo Degular';src:url('https://cdn.jsdelivr.net/gh/maasawalker/klaviyo-ai-eng-recruiting-page@main/deploy/assets/fonts/KlaviyoDegular/KlaviyoDegular-Semibold.otf') format('opentype');font-weight:600;font-display:swap}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--poppy:#FF4B32;--charcoal:#1D1E20;--mist:#F3F2F1;--white:#fff}
+body{font-family:'Instrument Sans',sans-serif;background:var(--white);color:var(--charcoal);line-height:1.7;-webkit-font-smoothing:antialiased}
+.page{max-width:780px;margin:0 auto;padding:60px 40px 100px}
+
+/* Header */
+.header{margin-bottom:56px;padding-bottom:32px;border-bottom:2px solid var(--poppy)}
+.header-meta{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--poppy);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px}
+.header-title{font-family:'Klaviyo Degular',sans-serif;font-size:40px;font-weight:400;line-height:1.1;letter-spacing:-.02em;margin-bottom:14px}
+.header-sub{font-size:18px;color:rgba(29,30,32,.65);max-width:560px;line-height:1.65}
+
+/* Stats row */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:56px}
+.stat{background:var(--mist);padding:20px 24px}
+.stat-num{font-family:'Klaviyo Degular',sans-serif;font-size:32px;font-weight:400;color:var(--poppy);line-height:1;margin-bottom:6px;letter-spacing:-.01em}
+.stat-label{font-size:12px;color:rgba(29,30,32,.55);font-weight:500}
+
+/* Sections */
+.section{margin-bottom:48px}
+.section-label{font-family:'DM Mono',monospace;font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--poppy);margin-bottom:6px}
+.section-title{font-family:'Klaviyo Degular',sans-serif;font-size:22px;font-weight:500;margin-bottom:16px;letter-spacing:-.01em}
+.section-body{font-size:15px;color:rgba(29,30,32,.78);line-height:1.75}
+.section-body p{margin-bottom:14px}
+.section-body p:last-child{margin-bottom:0}
+
+/* Decision cards */
+.decisions{display:flex;flex-direction:column;gap:2px;margin-top:20px}
+.decision{background:var(--mist);padding:20px 24px}
+.decision-title{font-family:'Instrument Sans',sans-serif;font-size:14px;font-weight:600;color:var(--charcoal);margin-bottom:6px}
+.decision-body{font-size:14px;color:rgba(29,30,32,.72);line-height:1.65}
+.decision-why{font-size:13px;color:var(--poppy);font-weight:500;margin-top:8px;font-style:italic}
+
+/* Quote */
+.pullquote{border-left:3px solid var(--poppy);padding:16px 24px;margin:32px 0;background:var(--mist)}
+.pullquote p{font-family:'Klaviyo Degular',sans-serif;font-size:18px;font-weight:400;color:var(--charcoal);line-height:1.5;letter-spacing:-.01em}
+
+/* Links */
+.links{display:flex;gap:12px;flex-wrap:wrap;margin-top:40px;padding-top:32px;border-top:1px solid rgba(29,30,32,.1)}
+.link-btn{display:inline-flex;align-items:center;gap:6px;background:var(--charcoal);color:white;font-size:13px;font-weight:500;padding:10px 20px;border-radius:2px;text-decoration:none;transition:opacity .15s}
+.link-btn:hover{opacity:.85}
+.link-btn.secondary{background:transparent;color:var(--charcoal);border:1px solid rgba(29,30,32,.2)}
+.link-btn.secondary:hover{background:var(--mist)}
+
+/* Footer */
+.footer{margin-top:64px;padding-top:40px;border-top:2px solid var(--poppy)}
+.footer-intro{font-family:'Klaviyo Degular',sans-serif;font-size:22px;font-weight:400;margin-bottom:6px;letter-spacing:-.01em}
+.footer-sub{font-size:14px;color:rgba(29,30,32,.55);margin-bottom:28px}
+.footer-contacts{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px}
+.footer-link{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--charcoal);text-decoration:none;background:var(--mist);padding:9px 16px;border-radius:2px;transition:all .15s}
+.footer-link:hover{background:var(--charcoal);color:white}
+.footer-link.resume{background:var(--poppy);color:white}
+.footer-link.resume:hover{opacity:.88}
+.footer-copy{font-family:'DM Mono',monospace;font-size:10px;color:#bbb;letter-spacing:.06em;text-transform:uppercase;margin-top:20px}
+
+@media(max-width:600px){.page{padding:40px 20px 80px}.stats{grid-template-columns:1fr 1fr}.header-title{font-size:30px}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <p class="header-meta">Employer Brand · Case Study · 2026</p>
+    <h1 class="header-title">Klaviyo Custom<br>Landing Page Generator</h1>
+    <p class="header-sub">How I used AI to build a scalable employer brand tool — and the strategic decisions that made it actually work for candidates.</p>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat"><div class="stat-num">5 min</div><div class="stat-label">JD to live page</div></div>
+    <div class="stat"><div class="stat-num">40+</div><div class="stat-label">Fields AI fills per role</div></div>
+    <div class="stat"><div class="stat-num">2</div><div class="stat-label">Live products shipped</div></div>
+  </div>
+
+  <!-- The problem -->
+  <div class="section">
+    <p class="section-label">The problem</p>
+    <h2 class="section-title">Most job postings are written for compliance, not candidates.</h2>
+    <div class="section-body">
+      <p>At Klaviyo, we have an exceptional employer brand story — the culture, the scale, the product, the people. But like most companies, that story rarely made it into the actual job posting. Candidates landed on Greenhouse listings that read like legal documents: walls of bullet points, corporate filler, zero personality.</p>
+      <p>The real gap isn't polish, it's personalization. Candidates want to feel like the role was written for them. And a great recruiting page does something equally important: it filters out the wrong people. When culture and EVP runs through every section, the wrong fits self-select out. Fewer applications mean better ones.</p>
+      <p>My goal: build a tool that closes that gap at scale, without requiring a designer, a copywriter, or three rounds of approval.</p>
+    </div>
+  </div>
+
+  <!-- The approach -->
+  <div class="section">
+    <p class="section-label">My approach</p>
+    <h2 class="section-title">AI as a starting point. Human judgment for everything that matters.</h2>
+    <div class="section-body">
+      <p>I used Claude to build a fully branded recruiting landing page for a live Klaviyo role (Senior AI Engineer), then turned it into a generator any recruiter could use. At every step, I made deliberate decisions about what to hand to AI and what to keep human — because the line between helpful automation and brand damage is thin.</p>
+    </div>
+
+    <div class="pullquote">
+      <p>"AI is good at structure and speed. It's bad at judgment. I built the tool so AI handles the 80% that's formulaic, and flags everything it touched for human review."</p>
+    </div>
+  </div>
+
+  <!-- Key decisions -->
+  <div class="section">
+    <p class="section-label">Key strategic decisions</p>
+    <h2 class="section-title">What I decided — and why it mattered.</h2>
+
+    <div class="decisions">
+      <div class="decision">
+        <div class="decision-title">Candidate-first copy, always</div>
+        <div class="decision-body">The AI was instructed to write hero headlines that speak to what the candidate gets to build or impact — not the company's needs. "Build the AI that runs itself." instead of "Senior AI Engineer." The rule was simple: if a candidate couldn't see themselves in the first sentence, the page had already failed.</div>
+        <div class="decision-why">→ Because candidates decide in seconds. The headline is your only shot.</div>
+      </div>
+
+      <div class="decision">
+        <div class="decision-title">Real brand assets, not approximations</div>
+        <div class="decision-body">I sourced the actual Klaviyo Degular font, exact hex codes, flag mark separators, and brand rules from the real 2026 brand guidelines Figma file — not a generic template. Every design decision was cross-referenced against documented brand specs (pill colors, ticker height, flag background opacity rules).</div>
+        <div class="decision-why">→ Because "close enough" erodes trust over time. If a recruiter generates a page that looks off-brand, the tool is worse than nothing.</div>
+      </div>
+
+      <div class="decision">
+        <div class="decision-title">Qualifications: verbatim from the JD, no exceptions</div>
+        <div class="decision-body">I explicitly told the AI not to summarize, rephrase, or combine requirements. If the JD listed 10 bullets, the page shows 10 bullets. This was a deliberate override of the AI's instinct to "improve" copy — because accuracy in qualifications is a legal and trust issue, not a style choice.</div>
+        <div class="decision-why">→ Because candidates fact-check. If the page says something different from the JD they received, you've lost credibility before the first call.</div>
+      </div>
+
+      <div class="decision">
+        <div class="decision-title">Persona context as a separate input layer</div>
+        <div class="decision-body">The Why Klaviyo section and CTA needed to speak differently to an engineer vs. a marketer vs. a sales candidate. I built a persona context layer — 5 pre-written EB briefs (Engineering, Marketing, Sales, Product, People) that the AI uses alongside the JD. The recruiter picks a preset; the AI adjusts its tone, language, and motivators accordingly.</div>
+        <div class="decision-why">→ Because "great opportunity" means something different to every candidate type. One-size-fits-all EB copy is just a different kind of wall of text.</div>
+      </div>
+
+      <div class="decision">
+        <div class="decision-title">Culture section stays human — always</div>
+        <div class="decision-body">The "Built Different" culture section uses Klaviyo's actual employee quotes and culture language. I excluded it from AI generation entirely — it never gets overwritten by a parse. Culture is the most human part of an employer brand, and the most easily flattened by AI trying to be helpful.</div>
+        <div class="decision-why">→ Because culture authenticity is the whole point. An AI-generated culture quote is worse than no quote.</div>
+      </div>
+
+      <div class="decision">
+        <div class="decision-title">Field state system: make AI oversight visible</div>
+        <div class="decision-body">Every field the AI touches turns yellow. Fields with template defaults are grey. Fields the recruiter has personally reviewed and edited go white. A completeness score shows exactly what's still unreviewed. The tool makes AI involvement visible and auditable rather than hiding it.</div>
+        <div class="decision-why">→ Because a recruiter who doesn't know what AI changed can't catch what AI got wrong. Transparency builds trust in the tool.</div>
+      </div>
+
+      <div class="decision">
+        <div class="decision-title">Social sharing: placed at peak engagement, not afterthought</div>
+        <div class="decision-body">Share buttons went in two places: a sticky sidebar on desktop (always visible while scrolling) and a "Know someone? Share this role — your friends deserve a job they actually rave about." strip directly after the CTA. Not in the footer where no one looks. The copy is designed to feel like a nudge from a friend, not a recruiter blast.</div>
+        <div class="decision-why">→ Because the moment right after someone finishes reading is when they're most likely to share. That's the peak, not the bottom of the page.</div>
+      </div>
+
+      <div class="decision">
+        <div class="decision-title">UTM tracking + analytics built in from the start</div>
+        <div class="decision-body">The generator produces pre-tagged UTM links for LinkedIn, email, Slack, and job boards — and embeds a GA4 snippet that fires on every "Apply now" click. I added this not because a recruiter asked for it, but because a TA director or CMO would immediately ask "how do we know this is working?" Having the answer built in changes the conversation.</div>
+        <div class="decision-why">→ Because any EB tool that can't prove ROI will eventually be cut. Attribution closes the loop.</div>
+      </div>
+
+      <div class="decision">
+        <div class="decision-title">Built the generator, not just the page</div>
+        <div class="decision-body">After building the Senior AI Engineer page, I didn't stop. I turned it into a tool any Klaviyo recruiter can use — with a form, live preview, AI parse, persona presets, and one-click deploy. The decision to build the system, not just the artifact, is the difference between a one-time project and scalable employer brand infrastructure.</div>
+        <div class="decision-why">→ Because the real EB problem isn't one bad job posting. It's the fact that every job posting is bad. Scale is the point.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- What I learned -->
+  <div class="section">
+    <p class="section-label">What I learned</p>
+    <h2 class="section-title">The most important lessons.</h2>
+    <div class="section-body">
+      <p><strong>Constraints are a feature.</strong> Working within Klaviyo's real brand guidelines — not approximating them — forced better decisions at every step. The brand spec told me exactly what a pill should look like, what opacity a flag background should be, how tall the ticker should be. Having a system made the product feel coherent, not assembled.</p>
+      <p><strong>AI fluency is knowing when not to use it.</strong> The tool's best decisions came from knowing what to hand to AI and what to keep human. AI can write a hero headline. It cannot decide whether that headline is true to a company's culture. That line matters.</p>
+      <p><strong>The product story is the portfolio.</strong> This tool demonstrates product thinking, EB strategy, AI fluency, and technical execution — in one artifact. I could have just written a deck about why recruiting pages matter. I built the thing instead.</p>
+    </div>
+  </div>
+
+  <!-- Links -->
+  <div class="links">
+    <a href="https://klaviyo-landing-page-generator.vercel.app/" target="_blank" class="link-btn">Open the generator →</a>
+    <a href="https://klaviyo-ai-eng-recruiting-page.vercel.app/" target="_blank" class="link-btn">View example page →</a>
+    <a href="https://klaviyo-landing-page-generator.vercel.app/how-to-use.html" target="_blank" class="link-btn secondary">How it works →</a>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p class="footer-intro">Let's talk.</p>
+    <p class="footer-sub">I'm Maasa — marketer, employer brander, and apparently someone who builds tools in her spare time. Always happy to connect.</p>
+    <div class="footer-contacts">
+      <a href="mailto:maasa.walker@gmail.com" class="footer-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        maasa.walker@gmail.com
+      </a>
+      <a href="tel:4257614866" class="footer-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.9a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.61 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 10.9a16 16 0 0 0 6 6l.96-.96a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 18.92z"/></svg>
+        425-761-4866
+      </a>
+      <a href="https://www.linkedin.com/in/maasawalker/" target="_blank" rel="noopener" class="footer-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        LinkedIn
+      </a>
+      <a href="./Maasa-Walker-Resume-2026.pdf" download class="footer-link resume">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download resume
+      </a>
+    </div>
+    <p class="footer-copy">Maasa Walker · Employer Brand & Marketing · 2026</p>
+  </div>
+
+</div>
+</body>
+</html>
